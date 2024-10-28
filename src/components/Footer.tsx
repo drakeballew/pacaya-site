@@ -85,7 +85,7 @@ function NewsletterForm() {
         Sign up for our newsletter
       </h2>
       <p className="mt-4 text-sm text-neutral-700">
-        Subscribe to get the latest design news, articles, resources and
+        Subscribe to get the latest Growth news, articles, resources and
         inspiration.
       </p>
       <div className="relative mt-6">
@@ -125,7 +125,7 @@ export function Footer() {
             <Logo className="h-8" fillOnHover />
           </Link>
           <p className="text-sm text-neutral-700">
-            © Studio Agency Inc. {new Date().getFullYear()}
+            © Pacaya Digital LLC {new Date().getFullYear()}
           </p>
         </div>
       </FadeIn>

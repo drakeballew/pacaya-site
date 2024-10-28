@@ -14,12 +14,12 @@ export function ContactSection() {
             </h2>
             <div className="mt-6 flex">
               <Button href="/contact" invert>
-                Say Hej
+                Say Hi
               </Button>
             </div>
             <div className="mt-10 border-t border-white/10 pt-10">
               <h3 className="font-display text-base font-semibold text-white">
-                Our offices
+                Our home
               </h3>
               <Offices
                 invert
