@@ -69,13 +69,11 @@ function CaseStudies({
   return (
     <>
       <SectionIntro
-        title="Harnessing technology for a brighter future"
+        title="Engineering Sales & Marketing solutions"
         className="mt-24 sm:mt-32 lg:mt-40"
       >
         <p>
-          We believe technology is the answer to the world’s greatest
-          challenges. It’s also the cause, so we find ourselves in bit of a
-          catch 22 situation.
+          Accelerate growth without pulling resources from Engineering.
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -147,18 +145,15 @@ function Services() {
           </div>
           <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4">
             <ListItem title="Sales & marketing automation">
-              We specialise in crafting beautiful, high quality marketing pages.
-              The rest of the website will be a shell that uses lorem ipsum
-              everywhere.
+              Stand up and/or refine your sales and marketing workflows 
+              to ensure you are capturing as much value as possible from your potential customers.
             </ListItem>
-            <ListItem title="Funnel optimization">
-              We have a team of skilled developers who are experts in the latest
-              app frameworks, like Angular 1 and Google Web Toolkit.
+            <ListItem title="Engineering as Marketing">
+              Build secondary applications that act as lead generation tools for your primary product.
             </ListItem>
             <ListItem title="Data & analytics">
-              We are at the forefront of modern e-commerce development. Which
-              mainly means adding your logo to the Shopify store template we’ve
-              used for the past six years.
+              Craft solutions that ensure you are able 
+              to answer your most pressing questions and uncover new opportunities.
             </ListItem>
           </List>
         </div>
@@ -183,7 +178,7 @@ export default async function Home() {
             Experts in Startup Growth
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
-            Working at the intersection of Marketing
+            We work at the intersection of Marketing
             and Engineering to help startups build the tools they need to grow.
           </p>
         </FadeIn>
@@ -197,9 +192,7 @@ export default async function Home() {
         className="mt-24 sm:mt-32 lg:mt-40"
         client={{ name: 'Phobia', logo: logoPhobiaDark }}
       >
-        The team at Studio went above and beyond with our onboarding, even
-        finding a way to access the user’s microphone without triggering one of
-        those annoying permission dialogs.
+        Pacaya truly understands zero, idea, or early-revenue startups and can help them progress with metrics and data that demonstrate product market fit.
       </Testimonial>
 
       <Services />
