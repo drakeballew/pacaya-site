@@ -15,14 +15,14 @@ import logoGreenLife from '@/images/clients/green-life/logo-light.svg'
 import logoHomeWork from '@/images/clients/home-work/logo-light.svg'
 import logoMailSmirk from '@/images/clients/mail-smirk/logo-light.svg'
 import logoNorthAdventures from '@/images/clients/north-adventures/logo-light.svg'
-import logoPhobiaDark from '@/images/clients/phobia/logo-dark.svg'
-import logoPhobiaLight from '@/images/clients/phobia/logo-light.svg'
+import logoUnicornFormsLight from '@/images/clients/unicornforms/logo-light.svg'
+import logoUnicornFormsDark from '@/images/clients/unicornforms/logo-dark.svg'
 import logoUnseal from '@/images/clients/unseal/logo-light.svg'
 import imageLaptop from '@/images/laptop.jpg'
 import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
 
 const clients = [
-  ['Phobia', logoPhobiaLight],
+  ['UnicornForms', logoUnicornFormsDark],
   ['Family Fund', logoFamilyFund],
   ['Unseal', logoUnseal],
   ['Mail Smirk', logoMailSmirk],
@@ -190,9 +190,9 @@ export default async function Home() {
 
       <Testimonial
         className="mt-24 sm:mt-32 lg:mt-40"
-        client={{ name: 'Phobia', logo: logoPhobiaDark }}
+        client={{ name: 'UnicornForms', logo: logoUnicornFormsLight }}
       >
-        Pacaya truly understands zero, idea, or early-revenue startups and can help them progress with metrics and data that demonstrate product market fit.
+        Pacaya truly understands zero, idea, and early-revenue startups and can help them progress with metrics and data that demonstrate product market fit.
       </Testimonial>
 
       <Services />
