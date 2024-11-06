@@ -38,11 +38,11 @@ function Culture() {
       </SectionIntro>
       <Container className="mt-16">
         <GridList>
-          <GridListItem title="Loyalty" invert>
+          <GridListItem title="Simplicity" invert>
             Our team has been with us since the beginning because none of them
             are allowed to have LinkedIn profiles.
           </GridListItem>
-          <GridListItem title="Trust" invert>
+          <GridListItem title="Patience" invert>
             We don’t care when our team works just as long as they are working
             every waking second.
           </GridListItem>

@@ -17,19 +17,29 @@ import logoMailSmirk from '@/images/clients/mail-smirk/logo-light.svg'
 import logoNorthAdventures from '@/images/clients/north-adventures/logo-light.svg'
 import logoUnicornFormsLight from '@/images/clients/unicornforms/logo-light.svg'
 import logoUnicornFormsDark from '@/images/clients/unicornforms/logo-dark.svg'
+import logoKaratLight from '@/images/clients/karat/logo-light.svg'
+import logoKaratDark from '@/images/clients/karat/logo-dark.svg'
+import logoFiverrLight from '@/images/clients/fiverr/logomark-dark.svg'
+import logoFiverrDark from '@/images/clients/fiverr/logo-dark.svg'
+import logoKivaDark from '@/images/clients/kiva/logo-dark.svg'
+import logoOutdoorsyDark from '@/images/clients/outdoorsy/logo-dark.svg'
+import logoItalicDark from '@/images/clients/italic/logo-dark.svg'
+import logoLeToteDark from '@/images/clients/letote/logo-dark.svg'
+import logoOlarkDark from '@/images/clients/olark/logo-dark.svg'
+import logoSpeakDark from '@/images/clients/speak/logo-dark.svg'
 import logoUnseal from '@/images/clients/unseal/logo-light.svg'
 import imageLaptop from '@/images/laptop.jpg'
 import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
 
 const clients = [
+  ['Fiverr', logoFiverrDark],
   ['UnicornForms', logoUnicornFormsDark],
-  ['Family Fund', logoFamilyFund],
-  ['Unseal', logoUnseal],
-  ['Mail Smirk', logoMailSmirk],
-  ['Home Work', logoHomeWork],
-  ['Green Life', logoGreenLife],
-  ['Bright Path', logoBrightPath],
-  ['North Adventures', logoNorthAdventures],
+  ['Karat', logoKaratDark],
+  ['Kiva', logoKivaDark],
+  ['Outdoorsy', logoOutdoorsyDark],
+  ['Italic', logoItalicDark],
+  ['LeTote', logoLeToteDark],
+  ['Speak', logoSpeakDark],
 ]
 
 function Clients() {
