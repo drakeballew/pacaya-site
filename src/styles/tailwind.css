@@ -1,3 +1,4 @@
 @import './base.css';
 @import './components.css';
 @import './utilities.css';
+@import "katex/dist/katex.min.css"; /* KaTeX CSS */

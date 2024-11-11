@@ -10,6 +10,8 @@ import { remarkRehypeWrap } from 'remark-rehype-wrap'
 import remarkUnwrapImages from 'remark-unwrap-images'
 import shiki from 'shiki'
 import { unifiedConditional } from 'unified-conditional'
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -50,7 +52,9 @@ export default async function config() {
     extension: /\.mdx$/,
     options: {
       recmaPlugins: [recmaImportImages],
+
       rehypePlugins: [
+        rehypeKatex,
         [rehypeShiki, { highlighter }],
         [
           remarkRehypeWrap,
@@ -62,6 +66,7 @@ export default async function config() {
         ],
       ],
       remarkPlugins: [
+        remarkMath,
         remarkGfm,
         remarkUnwrapImages,
         [

@@ -1,0 +1,80 @@
+import authorImage from '@/images/team/drake-ballew.jpg'
+
+export const article = {
+  date: '2024-02-11',
+  title: 'Event Tracking For Beginners',
+  description:
+    'A quick read on the most basic questions around event tracking.',
+  author: {
+    name: 'Drake Ballew',
+    role: 'Owner-Operator',
+    image: { src: authorImage },
+  },
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+}
+
+![Event Tracking For Beginners](./event-tracking.jpeg)
+
+## Preface: There Be Trolls Here
+‍
+When I first got started in Growth, events were an extremely confusing topic for me to grasp. I could see them in all of the downstream software I used, but if I needed to create, update, or delete an event, I suddenly got bogged down in long discussions with Engineers and Product Managers about why my requests were not a priority vs other much more important work.
+
+‍Yet, when I asked about what exactly was entailed in creating, updating, or deleting an event,  the discussion always became opaque - events became impossible to define as did the actual actions necessary to create, update, or delete them.
+
+‍This is because events are a relatively simple concept, and they are relatively easy to create, update, or delete. Anyone who tells you otherwise is a technical troll.
+
+## What are events?
+‍
+From a Growth perspective, there are two types of events:
+
+1. **Client-Side** - Think of these as actions that occur on your website, in your app, etc. Think page views, clicks, etc.
+
+2. **Server-Side** - Think of these as actions that occur because of an action on your website. Newsletter subscribe, user sign up, cart update, checkout - basically anything that updates information in your database.
+
+Before you get to creating, updating, or deleting events, it’s helpful to know which type of event is best to accomplish your underlying goal(s).
+
+## Why do we need events?
+‍
+Events are important for a number of reasons across the technology stack, but in Growth they are especially important for two reasons:
+
+1. ‍**Execution** - Events are extremely useful for executing Growth initiatives across the customer journey
+2. **Analysis** - Events provide the best first-party data that fills of many modern data warehouses
+‍
+Basically, a well configured and implemented event tracking plan will save you days upon days of hours, minutes, and seconds you’d otherwise spend repeating yourself across initiatives.
+
+## Creating A Tracking Plan
+‍
+In Growth, the magic of event tracking happens in the “how,” and that starts with creating a tracking plan. Event tracking plans are outlines of what user behaviors and associated properties you intend to track across your website and/or application.
+
+‍Because modern applications can be extremely complex, it’s best to start out with a simple tracking plan that consists of only the most fundamental user behaviors.
+
+<TopTip>
+   If you don’t know what these are off the top of your head, you need to think through this as it is possibly the most important single task you can perform in a Growth capacity.
+</TopTip>
+
+‍A good initial tracking plan for a web app will consist of things like:
+
+1. Page views
+2. Demonstrated intent
+3. Sign up
+4. Create/update/delete for core items
+
+That’s it! You will find that as your product grows so will the sophistication of your customer journey and the analytical tooling necessary to answer the questions that will drive further growth, but this is all you need to get started.
+
+## Implementation 
+
+To track users top-to-bottom through your funnel, you will want to start your tracking plan on the marketing website. Page views are good here (#1 above). These will be implemented client side.
+
+‍Next, set up identify and track calls on sign up and demonstrated intent events. These will likely be a mixture of client side and server side events.
+
+‍Finally, implement server-side tracking calls on all of your in-product initial tracking plan’s events.
+
+‍Your engineering team will be able to to assist you with implementation, but know that most Customer Data Platforms have software development kits that make implementation quick and painless for a simple tracking plan.
+
+## Summary
+‍
+This post should give you a high-level idea of what a tracking plan is, why it is useful, and how to implement event tracking for your marketing site and in-product flows. If I can impress one thing upon a first time early-stage founder, it would be to build out your Analytics and thus Growth motion from the beginning rather than waiting. Not only will it be insightful, but the insight it drives will help you learn faster and accelerate your growth.
