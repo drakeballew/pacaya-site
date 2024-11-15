@@ -148,7 +148,7 @@ export default async function About() {
             primary source of income. He had no experience, no clients, and only the vaguest idea of what he was doing.
           </p>
           <p>
-            While it hasn&apos;t always been the smoothest ride, in the 7+ years since, we've managed to help dozens of clients grow their businesses.
+            While it hasn&apos;t always been the smoothest ride, in the 7+ years since, we&apos;ve managed to help dozens of clients grow their businesses.
             From building out sales and marketing automations to designing and developing websites, we&apos;ve done it all and are excited to help you next.
           </p>
         </div>
