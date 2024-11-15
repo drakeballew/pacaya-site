@@ -58,12 +58,12 @@ function Discover() {
     <Section title="Discover" image={{ src: imageWhiteboard }}>
       <div className="space-y-6 text-base text-neutral-600">
         <p>
-          We typically embed ourselves in clients' everyday operations in order to understand their{' '}
+          We typically embed ourselves in clients&apos; everyday operations in order to understand their{' '}
           <strong className="font-semibold text-neutral-950">needs</strong> and
           goals, and what it will take to achieve them.
         </p>
         <p>
-          Once we have a sense of an engagement's scope, we report back with an {' '}
+          Once we have a sense of an engagement&apos;s scope, we report back with an {' '}
           <strong className="font-semibold text-neutral-950">action plan</strong> and proposed budget.
         </p>
         <p>
@@ -123,7 +123,7 @@ function Deliver() {
       <div className="space-y-6 text-base text-neutral-600">
         <p>
           As the end of the Build phase approaches, we begin to prepare for {' '}<strong className="font-semibold text-neutral-950">Delivery</strong>{' '}. 
-          In this phase, we conduct a final review of the project to ensure it meets the client's needs.
+          In this phase, we conduct a final review of the project to ensure it meets the client&apos;s needs.
         </p>
         <p>
           Finally, we <strong className="font-semibold text-neutral-950">handoff</strong> of the project to the client, including all necessary files and documentation, and provide a limited support period to ensure the project is stable.
@@ -135,7 +135,7 @@ function Deliver() {
       </h3>
       <List className="mt-8">
         <ListItem title="Testing">
-          We work with clients' stakeholders to ensure the project fulfills requirements and will not suffer from future edge cases.
+          We work with clients&apos; stakeholders to ensure the project fulfills requirements and will not suffer from future edge cases.
         </ListItem>
         <ListItem title="Documentation">
           We provide detailed documentation of the project, including all code and design files, to ensure the client can maintain the project in the future.

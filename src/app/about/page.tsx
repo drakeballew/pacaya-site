@@ -27,7 +27,7 @@ function Culture() {
         <p>
         We see technology as an efficiency layer to improve meaningful relationships. Whether your product helps 
         keep businesses running, addresses loneliness in elderly pets, or draws carbon out of the atmosphere,
-        we believe that technology is secondary to the problem you're solving, and the people and planet you're solving it for.
+        we believe that technology is secondary to the problem you&apos;re solving, and the people and planet you&apos;re solving it for.
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -148,8 +148,8 @@ export default async function About() {
             primary source of income. He had no experience, no clients, and only the vaguest idea of what he was doing.
           </p>
           <p>
-            While it hasn't always been the smoothest ride, in the 7+ years since, we've managed to help dozens of clients grow their businesses.
-            From building out sales and marketing automations to designing and developing websites, we've done it all and are excited to help you next.
+            While it hasn&apos;t always been the smoothest ride, in the 7+ years since, we've managed to help dozens of clients grow their businesses.
+            From building out sales and marketing automations to designing and developing websites, we&apos;ve done it all and are excited to help you next.
           </p>
         </div>
       </PageIntro>
