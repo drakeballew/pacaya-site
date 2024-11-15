@@ -4,24 +4,15 @@ import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
 import { Logo } from '@/components/Logo'
 import { socialMediaProfiles } from '@/components/SocialMedia'
-<<<<<<< HEAD
-=======
 import React from 'react'
->>>>>>> Add status to project posts and blog articles
 
 const navigation = [
   {
     title: 'Work',
     links: [
-<<<<<<< HEAD
-      { title: 'FamilyFund', href: '/work/family-fund' },
-      { title: 'Unseal', href: '/work/unseal' },
-      { title: 'Phobia', href: '/work/phobia' },
-=======
       { title: 'Fiverr', href: '/work/fiverr' },
       { title: 'Kiva.org', href: '/work/kiva' },
       { title: 'Outdoorsy', href: '/work/outdoorsy' },
->>>>>>> Add status to project posts and blog articles
       {
         title: (
           <>
@@ -41,17 +32,10 @@ const navigation = [
       { title: 'Contact us', href: '/contact' },
     ],
   },
-<<<<<<< HEAD
-  {
-    title: 'Connect',
-    links: socialMediaProfiles,
-  },
-=======
   // {
   //   title: 'Connect',
   //   links: socialMediaProfiles,
   // },
->>>>>>> Add status to project posts and blog articles
 ]
 
 function Navigation() {
@@ -96,10 +80,6 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function NewsletterForm() {
-<<<<<<< HEAD
-  return (
-    <form className="max-w-sm">
-=======
   const [formData, setFormData] = React.useState({ email: '' })
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -130,27 +110,18 @@ function NewsletterForm() {
 
   return (
     <form className="max-w-sm" onSubmit={handleSubmit}>
->>>>>>> Add status to project posts and blog articles
       <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
         Sign up for our newsletter
       </h2>
       <p className="mt-4 text-sm text-neutral-700">
-<<<<<<< HEAD
-        Subscribe to get the latest Growth news, articles, resources and
-        inspiration.
-=======
         Subscribe to receive tips, tricks, and thoughts on startup marketing, development, and leadership via e-mail.
->>>>>>> Add status to project posts and blog articles
       </p>
       <div className="relative mt-6">
         <input
           type="email"
-<<<<<<< HEAD
-=======
           name="email"
           value={formData.email}
           onChange={handleChange}
->>>>>>> Add status to project posts and blog articles
           placeholder="Email address"
           autoComplete="email"
           aria-label="Email address"
