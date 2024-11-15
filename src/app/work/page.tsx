@@ -31,7 +31,7 @@ function CaseStudies({
     <Container className="mt-40">
       <FadeIn>
         <h2 className="font-display text-2xl font-semibold text-neutral-950">
-          Case studies
+          Projects
         </h2>
       </FadeIn>
       <div className="mt-10 space-y-20 sm:space-y-24 lg:space-y-32">
@@ -76,7 +76,7 @@ function CaseStudies({
                       href={caseStudy.href}
                       aria-label={`Read case study: ${caseStudy.client}`}
                     >
-                      Read case study
+                      View summary
                     </Button>
                   </div>
                   {caseStudy.testimonial && (
@@ -140,11 +140,11 @@ function Clients() {
 export const metadata: Metadata = {
   title: 'Our Work',
   description:
-    'We believe in efficiency and maximizing our resources to provide the best value to our clients.',
+    'We believe in efficiently maximizing our resources to provide the best value to our clients.',
 }
 
 export default async function Work() {
-  let caseStudies = await loadCaseStudies()
+  let caseStudies = await loadCaseStudies("published")
 
   return (
     <>

@@ -13,8 +13,8 @@ export default async function BlogArticleWrapper({
   article: MDXEntry<Article>
   children: React.ReactNode
 }) {
-  let allArticles = await loadArticles()
-  let moreArticles = allArticles
+  let allPublishedArticles = await loadArticles("published")
+  let morePublishedArticles = allPublishedArticles
     .filter(({ metadata }) => metadata !== article)
     .slice(0, 2)
 
@@ -45,11 +45,11 @@ export default async function BlogArticleWrapper({
         </FadeIn>
       </Container>
 
-      {moreArticles.length > 0 && (
+      {morePublishedArticles.length > 0 && (
         <PageLinks
           className="mt-24 sm:mt-32 lg:mt-40"
           title="More articles"
-          pages={moreArticles}
+          pages={morePublishedArticles}
         />
       )}
 

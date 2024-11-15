@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Blog() {
-  let articles = await loadArticles()
+  let articles = await loadArticles("published")
 
   return (
     <>

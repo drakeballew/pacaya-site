@@ -31,6 +31,7 @@ export interface Article {
   date: string
   title: string
   description: string
+  status: string
   author: {
     name: string
     role: string
@@ -47,6 +48,7 @@ export interface CaseStudy {
   logo: ImageProps['src']
   image: ImagePropsWithOptionalAlt
   service: string
+  status: string
   testimonial: {
     author: {
       name: string
@@ -56,10 +58,12 @@ export interface CaseStudy {
   }
 }
 
-export function loadArticles() {
-  return loadEntries<Article>('blog', 'article')
+export async function loadArticles(status: string) {
+  const allArticles = await loadEntries<Article>('blog', 'article');
+  return allArticles.filter(article => article.status === status);
 }
 
-export function loadCaseStudies() {
-  return loadEntries<CaseStudy>('work', 'caseStudy')
+export async function loadCaseStudies(status: string) {
+  const allCaseStudies = await loadEntries<CaseStudy>('work', 'caseStudy');
+  return allCaseStudies.filter(caseStudy => caseStudy.status === status);
 }
