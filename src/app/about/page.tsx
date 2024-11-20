@@ -21,7 +21,7 @@ function Culture() {
     <div className="mt-24 rounded-4xl bg-neutral-950 py-24 sm:mt-32 lg:mt-40 lg:py-32">
       <SectionIntro
         eyebrow="Our beliefs"
-        title="What good will you do today?"
+        title="Do something good today"
         invert
       >
         <p>
@@ -33,7 +33,7 @@ function Culture() {
       <Container className="mt-16">
         <GridList>
           <GridListItem title="Simplicity" invert>
-          We strive to deliver solutions that abstract away complexity and empower user creativity.
+          We strive to deliver solutions that abstract away complexity and empower creativity.
           </GridListItem>
           <GridListItem title="Patience" invert>
             Solving problems with teamwork can be frustrating.

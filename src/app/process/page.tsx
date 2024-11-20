@@ -126,7 +126,7 @@ function Deliver() {
           In this phase, we conduct a final review of the project to ensure it meets the client&apos;s needs.
         </p>
         <p>
-          Finally, we <strong className="font-semibold text-neutral-950">handoff</strong> of the project to the client, including all necessary files and documentation, and provide a limited support period to ensure the project is stable.
+          Finally, we <strong className="font-semibold text-neutral-950">handoff</strong> the project to the client, including all necessary files and documentation, and provide a limited support period to ensure everything is stable.
         </p>
       </div>
 
@@ -135,13 +135,13 @@ function Deliver() {
       </h3>
       <List className="mt-8">
         <ListItem title="Testing">
-          We work with client stakeholders to ensure the project fulfills requirements and will not suffer from future edge cases.
+          We work with client stakeholders to ensure the project fulfills requirements and will not suffer from otherwise unforeseen edge cases.
         </ListItem>
         <ListItem title="Documentation">
           We provide detailed documentation of the project, including all code and design files, to ensure the client can maintain the project in the future.
         </ListItem>
         <ListItem title="Limited Support">
-          After handoff, we provide two weeks of limited support for the project to ensure that we did not overlook any important details during the build phase.
+          After handoff, we provide two weeks of limited support for the project to ensure that everything runs as smoothly as expected.
         </ListItem>
       </List>
     </Section>
@@ -163,29 +163,29 @@ function Values() {
         title="Balancing reliability and curiosity"
       >
         <p>
-          While experience is the best teacher, we believe in constantly learning and adapting to new technologies and methodologies. We strive to provide the best value to our clients by balancing our tried-and-true methods with a healthy dose of exploration.
+          While experience is the best teacher, we believe in constantly learning and adapting to new technologies and methodologies. We strive to provide the best value to our clients by combining our tried-and-true methods with a healthy dose of cutting-edge technologies.
         </p>
       </SectionIntro>
 
       <Container className="mt-24">
         <GridList>
           <GridListItem title="The score takes care of itself">
-            Growth is a process. Do the little things right, and the result is inevitable.
+            Growth is a process. Do the little things right and the result is inevitable.
           </GridListItem>
           <GridListItem title="Over-optimization is an enemy">
-            Optimization is powerful, but can become a trap when applied incorrectly.
+            Optimization is powerful but can become a trap when applied incorrectly.
           </GridListItem>
           <GridListItem title="Be water">
             Approach, emotions, and goals should be fluid and adaptable throughout the learning process.
           </GridListItem>
           <GridListItem title="Kindness wins">
-            People rarely remember what you did, but always remember how you made them feel.
+            People rarely remember what you did but always remember how you made them feel.
           </GridListItem>
-          <GridListItem title="Less talk, more rock">
-            Both are important, but actions are always more valuable than words.
+          <GridListItem title="Don't talk about it, be about it">
+            Talk is cheap. Strive to be who you want to become.
           </GridListItem>
           <GridListItem title="An enthusiasm unknown to mankind">
-            Effort and enthusiasm are prerequisites of success.
+            Effort and positivity are prerequisites of success.
           </GridListItem>
         </GridList>
       </Container>
