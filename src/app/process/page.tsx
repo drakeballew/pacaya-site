@@ -94,7 +94,7 @@ function Build() {
           Each client is provided a <strong className="font-semibold text-neutral-950">private Slack channel</strong> where they can ask questions and provide feedback. We generally respond to messages within a few minutes, but it can be up to 24 hours depending on when they are received.
         </p>
         <p>
-          We also have  <strong className="font-semibold text-neutral-950">weekly check-ins</strong> to ensure we are on track and to discuss any changes that may have come up.
+          We also have  <strong className="font-semibold text-neutral-950">weekly check-ins</strong> to ensure we are on track and to discuss any changes that may come up.
         </p>
       </div>
 
@@ -122,7 +122,7 @@ function Deliver() {
     <Section title="Deliver" image={{ src: imageMeeting, shape: 2 }}>
       <div className="space-y-6 text-base text-neutral-600">
         <p>
-          As the end of the Build phase approaches, we begin to prepare for {' '}<strong className="font-semibold text-neutral-950">Delivery</strong>{' '}. 
+          As the the Build phase winds down, we begin preparing for {' '}<strong className="font-semibold text-neutral-950">Delivery</strong>. 
           In this phase, we conduct a final review of the project to ensure it meets the client&apos;s needs.
         </p>
         <p>
@@ -135,7 +135,7 @@ function Deliver() {
       </h3>
       <List className="mt-8">
         <ListItem title="Testing">
-          We work with clients&apos; stakeholders to ensure the project fulfills requirements and will not suffer from future edge cases.
+          We work with client stakeholders to ensure the project fulfills requirements and will not suffer from future edge cases.
         </ListItem>
         <ListItem title="Documentation">
           We provide detailed documentation of the project, including all code and design files, to ensure the client can maintain the project in the future.
@@ -175,17 +175,17 @@ function Values() {
           <GridListItem title="Over-optimization is an enemy">
             Optimization is powerful, but can become a trap when applied incorrectly.
           </GridListItem>
-          <GridListItem title="Be like water">
+          <GridListItem title="Be water">
             Approach, emotions, and goals should be fluid and adaptable throughout the learning process.
           </GridListItem>
           <GridListItem title="Kindness wins">
             People rarely remember what you did, but always remember how you made them feel.
           </GridListItem>
-          <GridListItem title="Actions > Words">
-            Underpromise and overdeliver. Always.
+          <GridListItem title="Less talk, more rock">
+            Both are important, but actions are always more valuable than words.
           </GridListItem>
-          <GridListItem title="Strive, seek, find, and not yield">
-            Dedicated effort and enthusiasm are prerequisites of perseverance.
+          <GridListItem title="An enthusiasm unknown to mankind">
+            Effort and enthusiasm are prerequisites of success.
           </GridListItem>
         </GridList>
       </Container>

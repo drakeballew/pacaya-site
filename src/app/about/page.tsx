@@ -33,11 +33,11 @@ function Culture() {
       <Container className="mt-16">
         <GridList>
           <GridListItem title="Simplicity" invert>
-          We strive to deliver solutions that abstract away complexity and empowers the user to be creative.
+          We strive to deliver solutions that abstract away complexity and empower user creativity.
           </GridListItem>
           <GridListItem title="Patience" invert>
-            Solving problems with teamwork can be frustrating,
-            and we aim to be a calm, positive presence as a partner.
+            Solving problems with teamwork can be frustrating.
+            We aim to be a calm, positive presence as a partner.
           </GridListItem>
           <GridListItem title="Compassion" invert>
             Business is relationship. We listen, relate, and provide help for our clients and their customers.
