@@ -10,6 +10,7 @@ import { Container } from '@/components/Container'
 import { FadeIn, FadeInStagger } from '@/components/FadeIn'
 import { PageIntro } from '@/components/PageIntro'
 import { Testimonial } from '@/components/Testimonial'
+
 import logoBrightPath from '@/images/clients/bright-path/logo-dark.svg'
 import logoFamilyFund from '@/images/clients/family-fund/logo-dark.svg'
 import logoGreenLife from '@/images/clients/green-life/logo-dark.svg'
@@ -18,7 +19,17 @@ import logoMailSmirk from '@/images/clients/mail-smirk/logo-dark.svg'
 import logoNorthAdventures from '@/images/clients/north-adventures/logo-dark.svg'
 import logoPhobia from '@/images/clients/phobia/logo-dark.svg'
 import logoUnseal from '@/images/clients/unseal/logo-dark.svg'
+
 import logoOutdoorsyLight from '@/images/clients/outdoorsy/logo-light.svg'
+import logoArcadiaLight from '@/images/clients/arcadia/logo-light.svg'
+import logoFiverrLight from '@/images/clients/fiverr/logomark-light.svg'
+import logoItalicLight from '@/images/clients/italic/logo-light.svg'
+import logoKaratLight from '@/images/clients/karat/logo-light.svg'
+import logoKivaLight from '@/images/clients/kiva/logo-light.svg'
+import logoLeToteLight from '@/images/clients/letote/logo-light.svg'
+import logoSpeakLight from '@/images/clients/speak/logo-light.svg'
+import logoUnicornFormsLight from '@/images/clients/unicornforms/logo-light.svg'
+
 import { formatDate } from '@/lib/formatDate'
 import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
 
@@ -98,14 +109,14 @@ function CaseStudies({
 }
 
 const clients = [
-  ['Phobia', logoPhobia],
-  ['Family Fund', logoFamilyFund],
-  ['Unseal', logoUnseal],
-  ['Mail Smirk', logoMailSmirk],
-  ['Home Work', logoHomeWork],
-  ['Green Life', logoGreenLife],
-  ['Bright Path', logoBrightPath],
-  ['North Adventures', logoNorthAdventures],
+  ['Outdoorsy', logoOutdoorsyLight],
+  ['Arcadia', logoArcadiaLight],
+  ['UnicornForms', logoUnicornFormsLight],
+  ['Kiva', logoKivaLight],
+  ['Italic', logoItalicLight],
+  ['Karat', logoKaratLight],
+  ['Le Tote', logoLeToteLight],
+  ['Speak', logoSpeakLight],
 ]
 
 function Clients() {

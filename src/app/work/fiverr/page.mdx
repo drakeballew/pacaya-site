@@ -1,6 +1,6 @@
 import logo from '@/images/clients/fiverr/logomark-light.svg'
-import imageHero from './hero.jpg'
-import imageJennyWilson from './jenny-wilson.jpg'
+import imageHero from './creativelive-hero.png'
+import imageJennyWilson from './ay-headshot.jpeg'
 
 export const caseStudy = {
   client: 'Fiverr (CreativeLive)',
@@ -19,7 +19,7 @@ export const caseStudy = {
   testimonial: {
     author: { name: 'Amanda Young', role: 'Director of Retention' },
     content:
-      'The team at Studio went above and beyond with our onboarding, even finding a way to access the user’s microphone without triggering one of those annoying permission dialogs.',
+      "Pacaya is one of CreativeLive's longest tenured contracts and has at some point managed every facet of our email operation. They are not only capable and reliable, but also friendly and fun to work with. Highly recommend.",
   },
 }
 
@@ -30,35 +30,36 @@ export const metadata = {
 
 ## Overview
 
-Noticing incredibly high churn, the team at Phobia came to the conclusion that, instead of having a fundamentally flawed business idea, they needed to improve their onboarding process.
+Having been embedded within [CreativeLive's](https://www.creativelive.com/) email marketing team for over 5 years, we noticed an opportunity to streamline the design-to-development workflow for their newsletter operation.
 
-Previously users selected their phobias manually but this led to some users selecting things they weren’t actually afraid of to increase their matches.
+Each of CreativeLive's newsletters is custom designed, but the layout from an HTML/CSS perspective was generally very similar, with the moving parts being the Class, Instructor, URL, and Image Alt Text. 
 
-To combat this, we developed a system that displays a slideshow of common phobias during onboarding. We then use malware to surreptitiously access their microphone and detect when they have audible reactions. We measure the pitch, volume and duration of their screams and feed that information to the matching algorithm.
+CreativeLive's Design team uses Bynder for digital asset management, which we leveraged to check job status and retrieve design files，passing them to Pipedream and using OpenAI to retrieve the relevant information from them and return a best guess as to which Class, Instructor, URL, and Alt Text make the most sense for each asset. We then use that info to build the email in Iterable and send us a notification when it's ready for review.
 
-The next phase is a VR version of the onboarding flow where users are subjected to a series of scenarios that will determine their fears. We are currently developing the first scenario, working title: “Jumping out of a plane full of spiders”.
+This workflow has removed almost all sources of error within the development portion of the design-to-development workflow. Prior to building this out, campaigns could be developed late or get lost, URLs would be misassigned to the wrong asset, the HTML/CSS would break due to missing tags, the list goes on. The error rate for the newsletter program at CreativeLive is now functionally 0% thanks to this improved workflow.
 
-## What we did
+
+
+## Tools
 
 <TagList>
-  <TagListItem>Android</TagListItem>
-  <TagListItem>iOS</TagListItem>
-  <TagListItem>Malware</TagListItem>
-  <TagListItem>VR</TagListItem>
+  <TagListItem>Iterable</TagListItem>
+  <TagListItem>Bynder</TagListItem>
+  <TagListItem>OpenAI</TagListItem>
+  <TagListItem>Airtable</TagListItem>
+  <TagListItem>Pipedream</TagListItem>
+
+  
 </TagList>
 
 <Blockquote
-  author={{ name: 'Jenny Wilson', role: 'CPO of Phobia' }}
+  author={{ name: 'Amanda Young', role: 'Director of Retention Marketing' }}
   image={{ src: imageJennyWilson }}
 >
-  The team at Studio went above and beyond with our onboarding, even finding a
-  way to access the user’s microphone without triggering one of those annoying
-  permission dialogs.
+  Pacaya is one of our longest standing contracts and has at some point managed every facet of CreativeLive's email operation. They are not only capable and reliable, but also friendly and fun to work with. Highly recommend.
 </Blockquote>
 
 <StatList>
-  <StatListItem value="20%" label="Churn rate" />
-  <StatListItem value="5x" label="Uninstalls" />
-  <StatListItem value="2.3" label="App store rating" />
-  <StatListItem value="8" label="Pending lawsuits" />
+  <StatListItem value="0%" label="Error rate" />
+  <StatListItem value="10x" label="Development speed" />
 </StatList>
