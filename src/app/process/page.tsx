@@ -67,7 +67,7 @@ function Discover() {
           <strong className="font-semibold text-neutral-950">action plan</strong> and proposed budget.
         </p>
         <p>
-        Importantly, if we find we are not the best fit for your project, we will tell you and provide an alternative recommendation.
+        Importantly, if we find we are not the best fit for your project, we tell you and provide an alternative recommendation.
         </p>
       </div>
 
@@ -163,7 +163,7 @@ function Values() {
         title="Balancing reliability and curiosity"
       >
         <p>
-          While experience is the best teacher, we believe in constantly learning and adapting to new technologies and methodologies. We strive to provide the best value to our clients by combining our tried-and-true methods with a healthy dose of cutting-edge technologies.
+          While experience is the best teacher, we believe in constantly learning and adapting to new technologies and methodologies. We strive to provide the best value to our clients by combining our tried-and-true methods with a healthy dose of the bleeding edge.
         </p>
       </SectionIntro>
 

@@ -27,7 +27,7 @@ function Culture() {
         <p>
         We see technology as an efficiency layer to improve meaningful relationships. Whether your product helps 
         keep businesses running, addresses loneliness in elderly pets, or draws carbon out of the atmosphere,
-        we believe that technology is secondary to the problem you&apos;re solving, and the people and planet you&apos;re solving it for.
+        we believe that technology is secondary to the people and planet whose problems you&apos;re solving for.
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -64,7 +64,7 @@ const team = [
     people: [
       {
         name: 'Leeloo',
-        role: 'Senior Hardware Inspector',
+        role: 'Senior Hardware Analyst',
         image: { src: imageLeeloo },
       },
       {
@@ -145,7 +145,7 @@ export default async function About() {
           <p>
             Pacaya Digital was started in desperation in May 2017 after a three month backpacking trip through Central America.
             Broke, unemployed, and living in a converted San Francisco mudroom, Drake decided the best thing to do was to start a business as his
-            primary source of income. He had no experience, no clients, and only the vaguest idea of what he was doing.
+            primary source of income. He had no experience, no leads, and only the vaguest idea of what he was doing.
           </p>
           <p>
             While it hasn&apos;t always been the smoothest ride, in the 7+ years since, we&apos;ve managed to help dozens of clients grow their businesses.
