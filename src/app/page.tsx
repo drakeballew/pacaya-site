@@ -154,16 +154,16 @@ function Services() {
             </FadeIn>
           </div>
           <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4">
-            <ListItem title="Sales & Marketing automation">
-              Stand up and/or refine your sales and marketing workflows 
-              to ensure you are capturing as much value as possible from your potential customers.
-            </ListItem>
             <ListItem title="Engineering as Marketing">
               Build secondary applications that act as lead generation tools for your primary product.
             </ListItem>
             <ListItem title="Data & Analytics">
               Craft solutions that ensure you are able 
               to answer your most pressing questions and uncover new opportunities.
+            </ListItem>
+            <ListItem title="Sales & Marketing automation">
+              Stand up and/or refine your sales and marketing workflows 
+              to ensure you are capturing as much value as possible from your potential customers.
             </ListItem>
           </List>
         </div>
