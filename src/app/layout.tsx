@@ -23,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body className="flex min-h-full flex-col">
         <RootLayout>{children}</RootLayout>
       </body>
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
     </html>
   )
 }
