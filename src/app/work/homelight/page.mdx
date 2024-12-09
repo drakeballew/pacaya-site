@@ -1,16 +1,17 @@
 import logo from '@/images/clients/homelight/logomark-light.svg'
 import imageHero from './homelight-hero.png'
-import imageJennyWilson from './jenny-wilson.jpg'
+import imageForQuote from './jvs.jpg'
 
 export const caseStudy = {
   client: 'HomeLight',
   title: "Buying And Selling Simplified",
-  status: "draft",
+  status: "published",
+  type: 'Real Estate, Marketplace',
   description:
-    'HomeLight.',
+    "We helped Homelight debug their Iterable implementation and begin the transition away from Sendgrid.",
   summary: [
     "HomeLight is a platform for buying and selling real estate that makes one of life's most important transactions simple and satisfying.",
-    'We worked with HomeLight to improve their Iterable integration.',
+    "We worked with HomeLight to improve their Iterable integration.",
   ],
   logo,
   image: { src: imageHero },
@@ -19,7 +20,7 @@ export const caseStudy = {
   testimonial: {
     author: { name: 'John Van Slyke', role: 'VP Growth' },
     content:
-      'The team at Studio went above and beyond with our onboarding, even finding a way to access the user’s microphone without triggering one of those annoying permission dialogs.',
+      "Pacaya is awesome. Even the simple and mundane tasks, they knock out of the park.",
   },
 }
 
@@ -30,35 +31,20 @@ export const metadata = {
 
 ## Overview
 
-Noticing incredibly high churn, the team at Phobia came to the conclusion that, instead of having a fundamentally flawed business idea, they needed to improve their onboarding process.
+HomeLight hired Pacaya as plug-and-play help while they built out their Iterable integration. At the time, they were struggling to implement a handful of high-value workflows in their customer journey, as well as transition non-transactional email away from Sendgrid.
 
-Previously users selected their phobias manually but this led to some users selecting things they weren’t actually afraid of to increase their matches.
+We stepped in and helped HomeLight build a new marketing email template, debug technical issues with their Iterable implementation, begin the transition away from Sendgrid, and get the new Director of Lifecycle Marketing up to speed when he came on board.
 
-To combat this, we developed a system that displays a slideshow of common phobias during onboarding. We then use malware to surreptitiously access their microphone and detect when they have audible reactions. We measure the pitch, volume and duration of their screams and feed that information to the matching algorithm.
-
-The next phase is a VR version of the onboarding flow where users are subjected to a series of scenarios that will determine their fears. We are currently developing the first scenario, working title: “Jumping out of a plane full of spiders”.
-
-## What we did a
+## Tools
 
 <TagList>
-  <TagListItem>Android</TagListItem>
-  <TagListItem>iOS</TagListItem>
-  <TagListItem>Malware</TagListItem>
-  <TagListItem>VR</TagListItem>
+  <TagListItem>Iterable</TagListItem>
+  <TagListItem>HTML/CSS</TagListItem>
 </TagList>
 
 <Blockquote
-  author={{ name: 'Jenny Wilson', role: 'CPO of Phobia' }}
-  image={{ src: imageJennyWilson }}
+  author={{ name: 'John Van Slyke', role: 'VP Marketing' }}
+  image={{ src: imageForQuote }}
 >
-  The team at Studio went above and beyond with our onboarding, even finding a
-  way to access the user’s microphone without triggering one of those annoying
-  permission dialogs.
+  *"Pacaya is awesome. Even the simple and mundane tasks, they knock out of the park."*
 </Blockquote>
-
-<StatList>
-  <StatListItem value="20%" label="Churn rate" />
-  <StatListItem value="5x" label="Uninstalls" />
-  <StatListItem value="2.3" label="App store rating" />
-  <StatListItem value="8" label="Pending lawsuits" />
-</StatList>
