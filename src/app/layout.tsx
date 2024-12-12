@@ -1,7 +1,6 @@
 import { type Metadata } from 'next'
 import Head from 'next/head'
 import Script from 'next/script'
-
 import { RootLayout } from '@/components/RootLayout'
 
 import '@/styles/tailwind.css'
