@@ -48,6 +48,7 @@ function RadioInput({
 }
 
 export function ContactForm() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -67,7 +68,6 @@ export function ContactForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(formData);
     try {
       const response = await fetch('https://eoi08866npc8uyt.m.pipedream.net', {
         method: 'POST',
@@ -80,7 +80,8 @@ export function ContactForm() {
         throw new Error('Network response was not ok');
       }
       const data = await response;
-      console.log('Success:', data);
+      setIsSubmitted(true)
+      // console.log('Success:', data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -88,6 +89,11 @@ export function ContactForm() {
 
   return (
     <FadeIn className="lg:order-last">
+      {isSubmitted ? (
+        <div className="flex items-center justify-center">
+          ✅ Got it. We'll be in touch soon.
+        </div>
+      ) : (
       <form onSubmit={handleSubmit}>
         <h2 className="font-display text-base font-semibold text-neutral-950">
           Work inquiries
@@ -169,6 +175,7 @@ export function ContactForm() {
           Let’s work together
         </Button>
       </form>
+    )}
     </FadeIn>
   );
 }
