@@ -31,6 +31,31 @@ function TextInput({
   )
 }
 
+function TextArea({
+  label,
+  ...props
+}: React.ComponentPropsWithoutRef<'textarea'> & { label: string }) {
+  let id = useId();
+
+  return (
+    <div className="group relative z-0 transition-all focus-within:z-10">
+      <textarea
+        id={id}
+        rows={4}
+        {...props}
+        placeholder=""
+        className="peer block w-full border border-neutral-300 bg-transparent px-6 pb-4 pt-12 text-base/6 text-neutral-950 ring-4 ring-transparent transition focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5 group-first:rounded-t-2xl group-last:rounded-b-2xl resize-none"
+      />
+      <label
+        htmlFor={id}
+      className="pointer-events-none absolute left-6 top-6 origin-left text-base/6 text-neutral-500 transition-all duration-200 peer-focus:-translate-y-0 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-neutral-950 peer-[:not(:placeholder-shown)]:-translate-y-0 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-neutral-950"
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
+
 function RadioInput({
   label,
   ...props
@@ -58,7 +83,7 @@ export function ContactForm() {
     budget: '',
   });
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -129,7 +154,7 @@ export function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
           />
-          <TextInput
+          <TextArea
             label="Message"
             name="message"
             value={formData.message}
