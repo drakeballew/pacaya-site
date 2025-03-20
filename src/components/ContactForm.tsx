@@ -91,7 +91,7 @@ export function ContactForm() {
     <FadeIn className="lg:order-last">
       {isSubmitted ? (
         <div className="flex items-center justify-center">
-          ✅ Got it. We'll be in touch soon.
+          ✅ Got it. We&apos;ll be in touch soon.
         </div>
       ) : (
       <form onSubmit={handleSubmit}>
