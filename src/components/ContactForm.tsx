@@ -6,6 +6,13 @@ import React, { useState } from 'react'
 import { Button } from '@/components/Button'
 import { FadeIn } from '@/components/FadeIn'
 
+declare global {
+  interface Window {
+    sa_event?: (name: string, data?: any, cb?: () => void) => void;
+    sa_loaded?: boolean;
+  }
+}
+
 function TextInput({
   label,
   ...props
@@ -92,25 +99,49 @@ export function ContactForm() {
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  event.preventDefault();
+
     try {
-      const response = await fetch('https://eoi08866npc8uyt.m.pipedream.net', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
+        window.sa_event('form_submit_contact', {
+          form_name: 'Contact Form',
+          page: window.location.pathname,
+          submitted_at: new Date().toISOString(),
+          user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+          referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+          fields: {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            phone: formData.phone,
+            message: formData.message,
+            budget: formData.budget,
+          },
+        });
       }
-      const data = await response;
-      setIsSubmitted(true)
-      // console.log('Success:', data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Simple Analytics tracking failed:', error);
     }
+
+    // 🔹 Then submit your form
+    try {
+    const response = await fetch('https://eoi08866npc8uyt.m.pipedream.net', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    setIsSubmitted(true);
+  } catch (error) {
+    console.error('Error:', error);
   }
+}
 
   return (
     <FadeIn className="lg:order-last">
