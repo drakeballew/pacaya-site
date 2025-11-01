@@ -17,9 +17,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full bg-neutral-950 text-base antialiased">
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-        <Script id="sa-init" strategy="beforeInteractive">
+      <Script id="sa-init" strategy="beforeInteractive">
           {`window.sa_event = window.sa_event || function () {
               var a = [].slice.call(arguments);
               window.sa_event.q ? window.sa_event.q.push(a) : (window.sa_event.q = [a]);
@@ -89,12 +87,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               }
             })();`}
         </Script>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+        
+        
       </Head>
       <body className="flex min-h-full flex-col">
         <RootLayout>{children}</RootLayout>
-      <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
       </body>
-      
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
     </html>
   )
 }
