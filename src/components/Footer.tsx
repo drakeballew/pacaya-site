@@ -81,30 +81,43 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 function NewsletterForm() {
   const [formData, setFormData] = React.useState({ email: '' })
+  const [error, setError] = React.useState<string | null>(null)
+  const [success, setSuccess] = React.useState(false)
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
-    setFormData({ email: value });
+    const { value } = event.target
+    setFormData({ email: value })
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(formData);
+    event.preventDefault()
+    setError(null)
+    setSuccess(false)
+
+    const email = formData.email || ''
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address')
+      return
+    }
+
     try {
-      const response = await fetch('https://eoeasxn2i6pznby.m.pipedream.net', {
+      const res = await fetch('/api/newsletter', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       })
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
+
+      const body = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setError(body.error || 'Subscription failed')
+        return
       }
-      const data = await response;
-      console.log('Success:', data)
-    } catch (error) {
-      console.error('Error:', error)
+
+      setSuccess(true)
+      setFormData({ email: '' })
+    } catch (err) {
+      console.error(err)
+      setError('Network error')
     }
   }
 
@@ -116,7 +129,7 @@ function NewsletterForm() {
       <p className="mt-4 text-sm text-neutral-700">
         Subscribe to receive tips, tricks, and thoughts on startup marketing, development, and leadership via e-mail.
       </p>
-      <div className="relative mt-6">
+        <div className="relative mt-6">
         <input
           type="email"
           name="email"
@@ -137,6 +150,8 @@ function NewsletterForm() {
           </button>
         </div>
       </div>
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        {success && <p className="mt-2 text-sm text-green-600">Thanks — you're subscribed.</p>}
     </form>
   )
 }

@@ -81,6 +81,7 @@ function RadioInput({
 
 export function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -100,6 +101,17 @@ export function ContactForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
+    // client-side validation
+    const nextErrors: Record<string, string> = {}
+    if (!formData.name.trim()) nextErrors.name = 'Please provide your name.'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email || '')) nextErrors.email = 'Please provide a valid email.'
+    if (!formData.message.trim()) nextErrors.message = 'Please enter a message.'
+    if (formData.message.length > 2000) nextErrors.message = 'Message is too long (max 2000 chars).'
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      return
+    }
 
     try {
       if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
@@ -109,38 +121,32 @@ export function ContactForm() {
           submitted_at: new Date().toISOString(),
           user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
           referrer: typeof document !== 'undefined' ? document.referrer : undefined,
-          fields: {
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            phone: formData.phone,
-            message: formData.message,
-            budget: formData.budget,
-          },
-        });
+          fields: { ...formData },
+        })
       }
     } catch (error) {
-      console.error('Simple Analytics tracking failed:', error);
+      console.error('Simple Analytics tracking failed:', error)
     }
 
-    // 🔹 Then submit your form
     try {
-    const response = await fetch('https://eoi08866npc8uyt.m.pipedream.net', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+      const body = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        setErrors(body.errors || { form: body.error || 'Submission failed' })
+        return
+      }
+
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Error:', error)
+      setErrors({ form: 'Network error' })
     }
-
-    setIsSubmitted(true);
-  } catch (error) {
-    console.error('Error:', error);
-  }
 }
 
   return (
@@ -162,6 +168,7 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
           />
+          {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name}</p>}
           <TextInput
             label="Email"
             type="email"
@@ -170,6 +177,7 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
           />
+          {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
           <TextInput
             label="Company"
             name="company"
@@ -191,6 +199,7 @@ export function ContactForm() {
             value={formData.message}
             onChange={handleChange}
           />
+          {errors.message && <p className="mt-2 text-sm text-red-600">{errors.message}</p>}
           <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
             <fieldset>
               <legend className="text-base/6 text-neutral-500">Budget</legend>
@@ -230,6 +239,7 @@ export function ContactForm() {
         <Button type="submit" className="mt-10">
           Let’s work together
         </Button>
+        {errors.form && <p className="mt-4 text-sm text-red-600">{errors.form}</p>}
       </form>
     )}
     </FadeIn>
