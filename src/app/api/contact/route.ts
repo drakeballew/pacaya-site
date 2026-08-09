@@ -89,15 +89,29 @@ export async function POST(request: Request) {
       payload.email || ''
     )}&api_key=${encodeURIComponent(EMAILABLE_API_KEY)}`
 
+    console.log('Emailable request', { email: payload.email, url: emUrl })
     const emRes = await fetch(emUrl)
 
     const emBody = await emRes.json().catch(() => null)
     const isValid = interpretEmailableResponse(emBody)
 
-    if (!isValid) {
+    if (!emRes.ok || !isValid) {
+      console.error('Emailable verification failed', {
+        email: payload.email,
+        status: emRes.status,
+        statusText: emRes.statusText,
+        response: emBody,
+      })
       return NextResponse.json({ ok: false, error: 'Email address failed verification' }, { status: 400 })
     }
+
+    console.log('Emailable verification succeeded', {
+      email: payload.email,
+      status: emRes.status,
+      response: emBody,
+    })
   } catch (err) {
+    console.error('Emailable verification error', { email: payload.email, error: err })
     return NextResponse.json({ ok: false, error: 'Emailable verification failed' }, { status: 502 })
   }
 
@@ -122,7 +136,8 @@ export async function POST(request: Request) {
       }
       if (groups) body.groups = groups
 
-      await fetch(MAILERLITE_SUBSCRIBERS_URL, {
+      console.log('MailerLite add contact subscriber request', body)
+      const subscriberRes = await fetch(MAILERLITE_SUBSCRIBERS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,10 +145,27 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify(body),
       })
+
+      const subscriberBody = await subscriberRes.json().catch(() => null)
+      if (![200, 201].includes(subscriberRes.status)) {
+        console.error('MailerLite add contact subscriber failed', {
+          status: subscriberRes.status,
+          statusText: subscriberRes.statusText,
+          requestBody: body,
+          responseBody: subscriberBody,
+        })
+      } else {
+        console.log('MailerLite add contact subscriber succeeded', {
+          status: subscriberRes.status,
+          requestBody: body,
+          responseBody: subscriberBody,
+        })
+      }
     } catch (err) {
-      // non-fatal: continue to send notification
-      console.error('Failed to add contact as subscriber:', err)
+      console.error('MailerLite add contact subscriber error', { error: err })
     }
+  } else if (ADD_CONTACT_TO_MAILERLITE) {
+    console.warn('MailerLite contact subscriber skipped because MAILERLITE_API_KEY is not configured')
   }
 
   // Done: email verified and optional subscriber added

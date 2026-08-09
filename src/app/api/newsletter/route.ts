@@ -52,15 +52,29 @@ export async function POST(request: Request) {
       payload.email || ''
     )}&api_key=${encodeURIComponent(EMAILABLE_API_KEY)}`
 
+    console.log('Emailable request', { email: payload.email, url: emUrl })
     const emRes = await fetch(emUrl)
 
     const emBody = await emRes.json().catch(() => null)
     const isValid = interpretEmailableResponse(emBody)
 
-    if (!isValid) {
+    if (!emRes.ok || !isValid) {
+      console.error('Emailable verification failed', {
+        email: payload.email,
+        status: emRes.status,
+        statusText: emRes.statusText,
+        response: emBody,
+      })
       return NextResponse.json({ ok: false, error: 'Email address failed verification' }, { status: 400 })
     }
+
+    console.log('Emailable verification succeeded', {
+      email: payload.email,
+      status: emRes.status,
+      response: emBody,
+    })
   } catch (err) {
+    console.error('Emailable verification error', { email: payload.email, error: err })
     return NextResponse.json({ ok: false, error: 'Emailable verification failed' }, { status: 502 })
   }
 
@@ -76,6 +90,7 @@ export async function POST(request: Request) {
       const body: any = { email: payload.email, status: 'active' }
       if (groups) body.groups = groups
 
+      console.log('MailerLite add newsletter subscriber request', body)
       const subRes = await fetch(MAILERLITE_SUBSCRIBERS_URL, {
         method: 'POST',
         headers: {
@@ -85,12 +100,23 @@ export async function POST(request: Request) {
         body: JSON.stringify(body),
       })
 
+      const subBody = await subRes.json().catch(() => null)
       if (![200, 201].includes(subRes.status)) {
-        // continue but report partial failure
-        console.error('MailerLite add subscriber returned', subRes.status)
+        console.error('MailerLite add newsletter subscriber failed', {
+          status: subRes.status,
+          statusText: subRes.statusText,
+          requestBody: body,
+          responseBody: subBody,
+        })
+      } else {
+        console.log('MailerLite add newsletter subscriber succeeded', {
+          status: subRes.status,
+          requestBody: body,
+          responseBody: subBody,
+        })
       }
     } catch (err) {
-      console.error('Failed to add subscriber to MailerLite:', err)
+      console.error('MailerLite add newsletter subscriber error', { error: err })
     }
   }
 
