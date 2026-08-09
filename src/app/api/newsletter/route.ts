@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { verifyEmail } from '@/lib/emailable'
 import { formMessages, type FormApiResponse } from '@/lib/messages'
 import { upsertSubscriber } from '@/lib/mailerlite'
-import { getClientIp, verifyTurnstileToken } from '@/lib/turnstile'
+import { verifyTurnstileToken } from '@/lib/turnstile'
 import { newsletterSchema } from '@/lib/validation/schemas'
 
 export async function POST(request: Request) {
@@ -21,14 +21,11 @@ export async function POST(request: Request) {
   const turnstileToken =
     typeof body.turnstileToken === 'string' ? body.turnstileToken : ''
 
-  const turnstileValid = await verifyTurnstileToken(
-    turnstileToken,
-    getClientIp(request),
-  )
+  const turnstileValid = await verifyTurnstileToken(turnstileToken)
 
   if (!turnstileValid) {
     return NextResponse.json<FormApiResponse>(
-      { ok: false, message: formMessages.serverError },
+      { ok: false, message: formMessages.turnstileError },
       { status: 403 },
     )
   }

@@ -3,22 +3,10 @@ const TURNSTILE_VERIFY_URL =
 
 type TurnstileVerifyResponse = {
   success?: boolean
+  'error-codes'?: string[]
 }
 
-export function getClientIp(request: Request): string | undefined {
-  const forwarded = request.headers.get('x-forwarded-for')
-
-  if (forwarded) {
-    return forwarded.split(',')[0]?.trim()
-  }
-
-  return request.headers.get('x-real-ip') ?? undefined
-}
-
-export async function verifyTurnstileToken(
-  token: string,
-  remoteIp?: string,
-): Promise<boolean> {
+export async function verifyTurnstileToken(token: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY
 
   if (!secret) {
@@ -43,10 +31,6 @@ export async function verifyTurnstileToken(
       response: token,
     })
 
-    if (remoteIp) {
-      body.set('remoteip', remoteIp)
-    }
-
     const response = await fetch(TURNSTILE_VERIFY_URL, {
       method: 'POST',
       headers: {
@@ -61,6 +45,14 @@ export async function verifyTurnstileToken(
     }
 
     const data = (await response.json()) as TurnstileVerifyResponse
+
+    if (data.success !== true) {
+      console.error(
+        'Turnstile token rejected:',
+        data['error-codes']?.join(', ') ?? 'unknown error',
+      )
+    }
+
     return data.success === true
   } catch (error) {
     console.error('Turnstile verification error:', error)

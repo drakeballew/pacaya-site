@@ -103,6 +103,7 @@ function NewsletterForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [turnstileToken, setTurnstileToken] = React.useState<string | null>(null)
   const [turnstileFailed, setTurnstileFailed] = React.useState(false)
+  const [turnstileEnabled, setTurnstileEnabled] = React.useState(false)
 
   const formIsValid = isValid(newsletterSchema, formData)
   const waitingForTurnstile =
@@ -216,11 +217,10 @@ function NewsletterForm() {
       }
 
       setSubmitError(data.message)
-      if (response.status === 403) {
-        resetTurnstileAfterSubmit()
-      }
+      resetTurnstileAfterSubmit()
     } catch {
       setSubmitError(formMessages.serverError)
+      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
@@ -232,6 +232,7 @@ function NewsletterForm() {
         ref={turnstileRef}
         className="sr-only"
         size="invisible"
+        enabled={turnstileEnabled}
         onSuccess={handleTurnstileSuccess}
         onExpire={handleTurnstileExpire}
         onError={handleTurnstileError}
@@ -256,6 +257,7 @@ function NewsletterForm() {
           value={formData.email}
           onChange={handleChange}
           onBlur={handleBlur}
+          onFocus={() => setTurnstileEnabled(true)}
           placeholder="Email address"
           autoComplete="email"
           aria-label="Email address"

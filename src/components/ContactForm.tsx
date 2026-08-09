@@ -254,11 +254,10 @@ export function ContactForm() {
       }
 
       setSubmitError(data.message)
-      if (response.status === 403) {
-        resetTurnstileAfterSubmit()
-      }
+      resetTurnstileAfterSubmit()
     } catch {
       setSubmitError(formMessages.serverError)
+      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }

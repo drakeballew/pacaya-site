@@ -13,20 +13,32 @@ type TurnstileFieldProps = {
   onError: () => void
   size?: 'normal' | 'compact' | 'flexible' | 'invisible'
   className?: string
+  enabled?: boolean
 }
 
 export const TurnstileField = forwardRef<
   TurnstileFieldHandle,
   TurnstileFieldProps
 >(function TurnstileField(
-  { onSuccess, onExpire, onError, size = 'flexible', className },
+  {
+    onSuccess,
+    onExpire,
+    onError,
+    size = 'flexible',
+    className,
+    enabled = true,
+  },
   ref,
 ) {
   const turnstileRef = useRef<TurnstileInstance>(null)
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-
   const onSuccessRef = useRef(onSuccess)
+  const onExpireRef = useRef(onExpire)
+  const onErrorRef = useRef(onError)
+
   onSuccessRef.current = onSuccess
+  onExpireRef.current = onExpire
+  onErrorRef.current = onError
 
   useImperativeHandle(ref, () => ({
     reset: () => {
@@ -39,6 +51,10 @@ export const TurnstileField = forwardRef<
       onSuccessRef.current('dev-bypass')
     }
   }, [siteKey])
+
+  if (!enabled) {
+    return null
+  }
 
   if (!siteKey) {
     if (process.env.NODE_ENV === 'development') {
@@ -57,10 +73,13 @@ export const TurnstileField = forwardRef<
       <Turnstile
         ref={turnstileRef}
         siteKey={siteKey}
-        onSuccess={onSuccess}
-        onExpire={onExpire}
-        onError={onError}
-        options={{ size }}
+        onSuccess={(token) => onSuccessRef.current(token)}
+        onExpire={() => onExpireRef.current()}
+        onError={() => onErrorRef.current()}
+        options={{
+          size,
+          refreshExpired: 'auto',
+        }}
       />
     </div>
   )

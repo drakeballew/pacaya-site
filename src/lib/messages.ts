@@ -4,6 +4,8 @@ export const formMessages = {
   undeliverableEmail:
     "We couldn't verify that email address. Please double-check and try again.",
   serverError: 'Something went wrong on our end. Please try again in a moment.',
+  turnstileError:
+    'Security verification expired. Please wait a moment and try again.',
 } as const
 
 export type FormApiResponse = {
