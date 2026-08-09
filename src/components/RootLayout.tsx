@@ -20,6 +20,7 @@ import { GridPattern } from '@/components/GridPattern'
 import { Logo, Logomark } from '@/components/Logo'
 import { Offices } from '@/components/Offices'
 import { SocialMedia } from '@/components/SocialMedia'
+import { TurnstileProvider } from '@/components/TurnstileProvider'
 
 const RootLayoutContext = createContext<{
   logoHovered: boolean
@@ -283,7 +284,9 @@ export function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <RootLayoutContext.Provider value={{ logoHovered, setLogoHovered }}>
-      <RootLayoutInner key={pathname}>{children}</RootLayoutInner>
+      <TurnstileProvider>
+        <RootLayoutInner key={pathname}>{children}</RootLayoutInner>
+      </TurnstileProvider>
     </RootLayoutContext.Provider>
   )
 }

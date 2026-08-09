@@ -1,15 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 
 import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
 import { Logo } from '@/components/Logo'
-import {
-  TurnstileField,
-  type TurnstileFieldHandle,
-} from '@/components/TurnstileField'
+import { useTurnstile } from '@/components/TurnstileProvider'
 import type { FormApiResponse } from '@/lib/messages'
 import { formMessages } from '@/lib/messages'
 import {
@@ -95,19 +92,14 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function NewsletterForm() {
-  const turnstileRef = useRef<TurnstileFieldHandle>(null)
+  const { requestToken } = useTurnstile()
   const [formData, setFormData] = React.useState({ email: '' })
   const [errors, setErrors] = React.useState<Record<string, string>>({})
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
-  const [turnstileToken, setTurnstileToken] = React.useState<string | null>(null)
-  const [turnstileFailed, setTurnstileFailed] = React.useState(false)
-  const [turnstileEnabled, setTurnstileEnabled] = React.useState(false)
 
   const formIsValid = isValid(newsletterSchema, formData)
-  const waitingForTurnstile =
-    formIsValid && turnstileToken === null && !isSubmitting
 
   useEffect(() => {
     if (!successMessage) return
@@ -118,26 +110,6 @@ function NewsletterForm() {
 
     return () => window.clearTimeout(timeout)
   }, [successMessage])
-
-  const handleTurnstileSuccess = useCallback((token: string) => {
-    setTurnstileToken(token)
-    setTurnstileFailed(false)
-  }, [])
-
-  const handleTurnstileExpire = useCallback(() => {
-    setTurnstileToken(null)
-  }, [])
-
-  const handleTurnstileError = useCallback(() => {
-    setTurnstileToken(null)
-    setTurnstileFailed(true)
-    turnstileRef.current?.reset()
-  }, [])
-
-  const resetTurnstileAfterSubmit = useCallback(() => {
-    setTurnstileToken(null)
-    turnstileRef.current?.reset()
-  }, [])
 
   function validateField(field: 'email') {
     const fieldErrors = getFieldErrors(newsletterSchema, formData)
@@ -174,26 +146,30 @@ function NewsletterForm() {
       return
     }
 
-    if (!turnstileToken) {
-      setSubmitError('Complete the security check to submit.')
-      return
-    }
-
-    try {
-      if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
-        window.sa_event('form_submit_newsletter', {
-          form_name: 'Newsletter Form',
-          page: window.location.pathname,
-          submitted_at: new Date().toISOString(),
-        })
-      }
-    } catch (error) {
-      console.error('Simple Analytics tracking failed:', error)
-    }
-
     setIsSubmitting(true)
 
     try {
+      let turnstileToken: string
+
+      try {
+        turnstileToken = await requestToken()
+      } catch {
+        setSubmitError(formMessages.turnstileError)
+        return
+      }
+
+      try {
+        if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
+          window.sa_event('form_submit_newsletter', {
+            form_name: 'Newsletter Form',
+            page: window.location.pathname,
+            submitted_at: new Date().toISOString(),
+          })
+        }
+      } catch (error) {
+        console.error('Simple Analytics tracking failed:', error)
+      }
+
       const response = await fetch('/api/newsletter', {
         method: 'POST',
         headers: {
@@ -212,52 +188,38 @@ function NewsletterForm() {
         setErrors({})
         setSubmitError(null)
         setSuccessMessage(data.message)
-        resetTurnstileAfterSubmit()
         return
       }
 
       setSubmitError(data.message)
-      resetTurnstileAfterSubmit()
     } catch {
       setSubmitError(formMessages.serverError)
-      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <>
-      <TurnstileField
-        ref={turnstileRef}
-        className="sr-only"
-        size="invisible"
-        enabled={turnstileEnabled}
-        onSuccess={handleTurnstileSuccess}
-        onExpire={handleTurnstileExpire}
-        onError={handleTurnstileError}
-      />
-      <form
-        className="max-w-sm"
-        onSubmit={handleSubmit}
-        noValidate
-        data-sa-client-handled="true"
-      >
-        <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
-          Sign up for our newsletter
-        </h2>
-        <p className="mt-4 text-sm text-neutral-700">
-          Subscribe to receive tips, tricks, and thoughts on startup marketing,
-          development, and leadership via e-mail.
-        </p>
-        <div className="relative mt-6">
+    <form
+      className="max-w-sm"
+      onSubmit={handleSubmit}
+      noValidate
+      data-sa-client-handled="true"
+    >
+      <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
+        Sign up for our newsletter
+      </h2>
+      <p className="mt-4 text-sm text-neutral-700">
+        Subscribe to receive tips, tricks, and thoughts on startup marketing,
+        development, and leadership via e-mail.
+      </p>
+      <div className="relative mt-6">
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           onBlur={handleBlur}
-          onFocus={() => setTurnstileEnabled(true)}
           placeholder="Email address"
           autoComplete="email"
           aria-label="Email address"
@@ -276,7 +238,7 @@ function NewsletterForm() {
             <button
               type="submit"
               aria-label="Submit"
-              disabled={isSubmitting || waitingForTurnstile}
+              disabled={isSubmitting}
               className="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ArrowIcon className="w-4" />
@@ -303,22 +265,12 @@ function NewsletterForm() {
           {errors.email}
         </p>
       ) : null}
-      {turnstileFailed ? (
-        <p className="mt-2 text-sm text-red-600" role="alert">
-          Security verification failed. Please refresh the page and try again.
-        </p>
-      ) : waitingForTurnstile && !successMessage ? (
-        <p className="mt-2 text-sm text-neutral-600">
-          Preparing secure submission…
-        </p>
-      ) : null}
       {submitError ? (
         <p className="mt-2 text-sm text-red-600" role="alert">
           {submitError}
         </p>
       ) : null}
-      </form>
-    </>
+    </form>
   )
 }
 

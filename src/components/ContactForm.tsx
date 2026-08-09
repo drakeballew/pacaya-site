@@ -1,14 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import React from 'react'
 
 import { Button } from '@/components/Button'
 import { FadeIn } from '@/components/FadeIn'
-import {
-  TurnstileField,
-  type TurnstileFieldHandle,
-} from '@/components/TurnstileField'
+import { useTurnstile } from '@/components/TurnstileProvider'
 import type { FormApiResponse } from '@/lib/messages'
 import { formMessages } from '@/lib/messages'
 import {
@@ -126,18 +123,14 @@ const initialFormData = {
 }
 
 export function ContactForm() {
-  const turnstileRef = useRef<TurnstileFieldHandle>(null)
+  const { requestToken } = useTurnstile()
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const [turnstileFailed, setTurnstileFailed] = useState(false)
 
   const formIsValid = isValid(contactSchema, formData)
-  const waitingForTurnstile =
-    formIsValid && turnstileToken === null && !isSubmitting
 
   useEffect(() => {
     if (!successMessage) return
@@ -148,26 +141,6 @@ export function ContactForm() {
 
     return () => window.clearTimeout(timeout)
   }, [successMessage])
-
-  const handleTurnstileSuccess = useCallback((token: string) => {
-    setTurnstileToken(token)
-    setTurnstileFailed(false)
-  }, [])
-
-  const handleTurnstileExpire = useCallback(() => {
-    setTurnstileToken(null)
-  }, [])
-
-  const handleTurnstileError = useCallback(() => {
-    setTurnstileToken(null)
-    setTurnstileFailed(true)
-    turnstileRef.current?.reset()
-  }, [])
-
-  const resetTurnstileAfterSubmit = useCallback(() => {
-    setTurnstileToken(null)
-    turnstileRef.current?.reset()
-  }, [])
 
   function validateField(field: keyof typeof initialFormData) {
     const fieldErrors = getFieldErrors(contactSchema, formData)
@@ -208,29 +181,33 @@ export function ContactForm() {
       return
     }
 
-    if (!turnstileToken) {
-      setSubmitError('Security verification is still in progress. Please try again.')
-      return
-    }
-
-    try {
-      if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
-        window.sa_event('form_submit_contact', {
-          form_name: 'Contact Form',
-          page: window.location.pathname,
-          submitted_at: new Date().toISOString(),
-          user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
-          referrer: typeof document !== 'undefined' ? document.referrer : undefined,
-          fields: { ...formData },
-        })
-      }
-    } catch (error) {
-      console.error('Simple Analytics tracking failed:', error)
-    }
-
     setIsSubmitting(true)
 
     try {
+      let turnstileToken: string
+
+      try {
+        turnstileToken = await requestToken()
+      } catch {
+        setSubmitError(formMessages.turnstileError)
+        return
+      }
+
+      try {
+        if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
+          window.sa_event('form_submit_contact', {
+            form_name: 'Contact Form',
+            page: window.location.pathname,
+            submitted_at: new Date().toISOString(),
+            user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+            referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+            fields: { ...formData },
+          })
+        }
+      } catch (error) {
+        console.error('Simple Analytics tracking failed:', error)
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -249,31 +226,19 @@ export function ContactForm() {
         setErrors({})
         setSubmitError(null)
         setSuccessMessage(data.message)
-        resetTurnstileAfterSubmit()
         return
       }
 
       setSubmitError(data.message)
-      resetTurnstileAfterSubmit()
     } catch {
       setSubmitError(formMessages.serverError)
-      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="lg:order-last">
-      <TurnstileField
-        ref={turnstileRef}
-        className="sr-only"
-        size="invisible"
-        onSuccess={handleTurnstileSuccess}
-        onExpire={handleTurnstileExpire}
-        onError={handleTurnstileError}
-      />
-      <FadeIn>
+    <FadeIn className="lg:order-last">
       <form onSubmit={handleSubmit} noValidate data-sa-client-handled="true">
         <h2 className="font-display text-base font-semibold text-neutral-950">
           Work inquiries
@@ -376,15 +341,6 @@ export function ContactForm() {
             {submitError}
           </p>
         ) : null}
-        {turnstileFailed ? (
-          <p className="mt-6 text-sm text-red-600" role="alert">
-            Security verification failed. Please refresh the page and try again.
-          </p>
-        ) : waitingForTurnstile ? (
-          <p className="mt-6 text-sm text-neutral-600">
-            Preparing secure submission…
-          </p>
-        ) : null}
         {successMessage ? (
           <div
             className="mt-10 rounded-2xl border border-green-200 bg-green-50 px-6 py-4 text-sm font-medium text-green-800"
@@ -397,13 +353,12 @@ export function ContactForm() {
           <Button
             type="submit"
             className="mt-10 disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={isSubmitting || waitingForTurnstile}
+            disabled={isSubmitting}
           >
             {isSubmitting ? 'Sending…' : 'Let’s work together'}
           </Button>
         )}
       </form>
-      </FadeIn>
-    </div>
+    </FadeIn>
   );
 }
