@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
@@ -118,25 +118,25 @@ function NewsletterForm() {
     return () => window.clearTimeout(timeout)
   }, [successMessage])
 
-  function handleTurnstileSuccess(token: string) {
+  const handleTurnstileSuccess = useCallback((token: string) => {
     setTurnstileToken(token)
     setTurnstileFailed(false)
-  }
+  }, [])
 
-  function handleTurnstileExpire() {
+  const handleTurnstileExpire = useCallback(() => {
     setTurnstileToken(null)
-  }
+  }, [])
 
-  function handleTurnstileError() {
+  const handleTurnstileError = useCallback(() => {
     setTurnstileToken(null)
     setTurnstileFailed(true)
     turnstileRef.current?.reset()
-  }
+  }, [])
 
-  function resetTurnstileAfterSubmit() {
+  const resetTurnstileAfterSubmit = useCallback(() => {
     setTurnstileToken(null)
     turnstileRef.current?.reset()
-  }
+  }, [])
 
   function validateField(field: 'email') {
     const fieldErrors = getFieldErrors(newsletterSchema, formData)
@@ -216,29 +216,18 @@ function NewsletterForm() {
       }
 
       setSubmitError(data.message)
-      resetTurnstileAfterSubmit()
+      if (response.status === 403) {
+        resetTurnstileAfterSubmit()
+      }
     } catch {
       setSubmitError(formMessages.serverError)
-      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <form
-      className="max-w-sm"
-      onSubmit={handleSubmit}
-      noValidate
-      data-sa-client-handled="true"
-    >
-      <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
-        Sign up for our newsletter
-      </h2>
-      <p className="mt-4 text-sm text-neutral-700">
-        Subscribe to receive tips, tricks, and thoughts on startup marketing,
-        development, and leadership via e-mail.
-      </p>
+    <>
       <TurnstileField
         ref={turnstileRef}
         className="sr-only"
@@ -247,7 +236,20 @@ function NewsletterForm() {
         onExpire={handleTurnstileExpire}
         onError={handleTurnstileError}
       />
-      <div className="relative mt-6">
+      <form
+        className="max-w-sm"
+        onSubmit={handleSubmit}
+        noValidate
+        data-sa-client-handled="true"
+      >
+        <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
+          Sign up for our newsletter
+        </h2>
+        <p className="mt-4 text-sm text-neutral-700">
+          Subscribe to receive tips, tricks, and thoughts on startup marketing,
+          development, and leadership via e-mail.
+        </p>
+        <div className="relative mt-6">
         <input
           type="email"
           name="email"
@@ -301,11 +303,11 @@ function NewsletterForm() {
       ) : null}
       {turnstileFailed ? (
         <p className="mt-2 text-sm text-red-600" role="alert">
-          Security verification failed. Please try again.
+          Security verification failed. Please refresh the page and try again.
         </p>
       ) : waitingForTurnstile && !successMessage ? (
         <p className="mt-2 text-sm text-neutral-600">
-          Complete the security check to submit.
+          Preparing secure submission…
         </p>
       ) : null}
       {submitError ? (
@@ -313,20 +315,23 @@ function NewsletterForm() {
           {submitError}
         </p>
       ) : null}
-    </form>
+      </form>
+    </>
   )
 }
 
 export function Footer() {
   return (
     <Container as="footer" className="mt-24 w-full sm:mt-32 lg:mt-40">
-      <FadeIn>
-        <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2">
+        <FadeIn>
           <Navigation />
-          <div className="flex lg:justify-end">
-            <NewsletterForm />
-          </div>
+        </FadeIn>
+        <div className="flex lg:justify-end">
+          <NewsletterForm />
         </div>
+      </div>
+      <FadeIn>
         <div className="mb-20 mt-24 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-t border-neutral-950/10 pt-12">
           <Link href="/" aria-label="Home">
             <Logo className="h-8" fillOnHover />

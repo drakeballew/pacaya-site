@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import React from 'react'
 
 import { Button } from '@/components/Button'
@@ -149,25 +149,25 @@ export function ContactForm() {
     return () => window.clearTimeout(timeout)
   }, [successMessage])
 
-  function handleTurnstileSuccess(token: string) {
+  const handleTurnstileSuccess = useCallback((token: string) => {
     setTurnstileToken(token)
     setTurnstileFailed(false)
-  }
+  }, [])
 
-  function handleTurnstileExpire() {
+  const handleTurnstileExpire = useCallback(() => {
     setTurnstileToken(null)
-  }
+  }, [])
 
-  function handleTurnstileError() {
+  const handleTurnstileError = useCallback(() => {
     setTurnstileToken(null)
     setTurnstileFailed(true)
     turnstileRef.current?.reset()
-  }
+  }, [])
 
-  function resetTurnstileAfterSubmit() {
+  const resetTurnstileAfterSubmit = useCallback(() => {
     setTurnstileToken(null)
     turnstileRef.current?.reset()
-  }
+  }, [])
 
   function validateField(field: keyof typeof initialFormData) {
     const fieldErrors = getFieldErrors(contactSchema, formData)
@@ -209,7 +209,7 @@ export function ContactForm() {
     }
 
     if (!turnstileToken) {
-      setSubmitError('Complete the security check below to submit.')
+      setSubmitError('Security verification is still in progress. Please try again.')
       return
     }
 
@@ -254,17 +254,27 @@ export function ContactForm() {
       }
 
       setSubmitError(data.message)
-      resetTurnstileAfterSubmit()
+      if (response.status === 403) {
+        resetTurnstileAfterSubmit()
+      }
     } catch {
       setSubmitError(formMessages.serverError)
-      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <FadeIn className="lg:order-last">
+    <div className="lg:order-last">
+      <TurnstileField
+        ref={turnstileRef}
+        className="sr-only"
+        size="invisible"
+        onSuccess={handleTurnstileSuccess}
+        onExpire={handleTurnstileExpire}
+        onError={handleTurnstileError}
+      />
+      <FadeIn>
       <form onSubmit={handleSubmit} noValidate data-sa-client-handled="true">
         <h2 className="font-display text-base font-semibold text-neutral-950">
           Work inquiries
@@ -367,20 +377,13 @@ export function ContactForm() {
             {submitError}
           </p>
         ) : null}
-        <TurnstileField
-          ref={turnstileRef}
-          className="mt-6"
-          onSuccess={handleTurnstileSuccess}
-          onExpire={handleTurnstileExpire}
-          onError={handleTurnstileError}
-        />
         {turnstileFailed ? (
-          <p className="mt-2 text-sm text-red-600" role="alert">
-            Security verification failed. Please try again.
+          <p className="mt-6 text-sm text-red-600" role="alert">
+            Security verification failed. Please refresh the page and try again.
           </p>
         ) : waitingForTurnstile ? (
-          <p className="mt-2 text-sm text-neutral-600">
-            Complete the security check above to submit.
+          <p className="mt-6 text-sm text-neutral-600">
+            Preparing secure submission…
           </p>
         ) : null}
         {successMessage ? (
@@ -401,6 +404,7 @@ export function ContactForm() {
           </Button>
         )}
       </form>
-    </FadeIn>
+      </FadeIn>
+    </div>
   );
 }

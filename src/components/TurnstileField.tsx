@@ -25,6 +25,9 @@ export const TurnstileField = forwardRef<
   const turnstileRef = useRef<TurnstileInstance>(null)
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
+  const onSuccessRef = useRef(onSuccess)
+  onSuccessRef.current = onSuccess
+
   useImperativeHandle(ref, () => ({
     reset: () => {
       turnstileRef.current?.reset()
@@ -33,9 +36,9 @@ export const TurnstileField = forwardRef<
 
   useEffect(() => {
     if (!siteKey && process.env.NODE_ENV === 'development') {
-      onSuccess('dev-bypass')
+      onSuccessRef.current('dev-bypass')
     }
-  }, [onSuccess, siteKey])
+  }, [siteKey])
 
   if (!siteKey) {
     if (process.env.NODE_ENV === 'development') {
