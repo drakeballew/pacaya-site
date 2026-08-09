@@ -100,7 +100,8 @@ export function ContactForm() {
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
+    event.preventDefault()
+    event.stopPropagation()
     // client-side validation
     const nextErrors: Record<string, string> = {}
     if (!formData.name.trim()) nextErrors.name = 'Please provide your name.'

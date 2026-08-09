@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 
 import { Container } from '@/components/Container'
@@ -91,6 +93,7 @@ function NewsletterForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    event.stopPropagation()
     setError(null)
     setSuccess(false)
 
@@ -121,7 +124,16 @@ function NewsletterForm() {
     }
   }
 
-  return (
+  return success ? (
+    <div className="max-w-sm rounded-2xl border border-neutral-300 bg-white/50 px-6 py-8 text-center shadow-sm">
+      <p className="font-display text-sm font-semibold tracking-wider text-neutral-950">
+        You’re subscribed!
+      </p>
+      <p className="mt-4 text-sm text-neutral-700">
+        Thanks for signing up. We’ll keep you in the loop with new content.
+      </p>
+    </div>
+  ) : (
     <form className="max-w-sm" onSubmit={handleSubmit}>
       <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
         Sign up for our newsletter
