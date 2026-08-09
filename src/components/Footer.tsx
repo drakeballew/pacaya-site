@@ -151,7 +151,7 @@ function NewsletterForm() {
         </div>
       </div>
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-        {success && <p className="mt-2 text-sm text-green-600">Thanks — you're subscribed.</p>}
+        {success && <p className="mt-2 text-sm text-green-600">Thanks — you&apos;re subscribed.</p>}
     </form>
   )
 }
