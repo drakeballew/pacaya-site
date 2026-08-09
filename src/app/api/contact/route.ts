@@ -105,26 +105,30 @@ export async function POST(request: Request) {
   const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY
   const MAILERLITE_SUBSCRIBERS_URL = process.env.MAILERLITE_SUBSCRIBERS_URL || 'https://connect.mailerlite.com/api/subscribers'
   const ADD_CONTACT_TO_MAILERLITE = String(process.env.ADD_CONTACT_TO_MAILERLITE || '').toLowerCase() === 'true'
+  const MAILERLITE_CONTACT_FORM_GROUP_ID = process.env.MAILERLITE_CONTACT_FORM_GROUP_ID
 
   // Optionally add contact email as subscriber
   if (ADD_CONTACT_TO_MAILERLITE && MAILERLITE_API_KEY) {
     try {
+      const groups = MAILERLITE_CONTACT_FORM_GROUP_ID ? [MAILERLITE_CONTACT_FORM_GROUP_ID] : undefined
+      const body: any = {
+        email: payload.email,
+        fields: {
+          name: payload.name,
+          company: payload.company,
+          budget: payload.budget,
+          phone: payload.phone,
+        },
+      }
+      if (groups) body.groups = groups
+
       await fetch(MAILERLITE_SUBSCRIBERS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${MAILERLITE_API_KEY}`,
         },
-        body: JSON.stringify({
-            email: payload.email,
-            fields: {
-              name: payload.name,
-              company: payload.company,
-              budget: payload.budget,
-              phone: payload.phone,
-            },
-            groups: ['108598124381997029'],
-          }),
+        body: JSON.stringify(body),
       })
     } catch (err) {
       // non-fatal: continue to send notification

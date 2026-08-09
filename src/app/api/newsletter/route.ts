@@ -67,17 +67,22 @@ export async function POST(request: Request) {
   const MAILERLITE_API_URL = process.env.MAILERLITE_API_URL
   const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY
   const MAILERLITE_SUBSCRIBERS_URL = process.env.MAILERLITE_SUBSCRIBERS_URL || 'https://connect.mailerlite.com/api/subscribers'
+  const MAILERLITE_NEWSLETTER_GROUP_ID = process.env.MAILERLITE_NEWSLETTER_GROUP_ID
 
   // Add subscriber via MailerLite
   if (MAILERLITE_API_KEY) {
     try {
+      const groups = MAILERLITE_NEWSLETTER_GROUP_ID ? [MAILERLITE_NEWSLETTER_GROUP_ID] : undefined
+      const body: any = { email: payload.email, status: 'active' }
+      if (groups) body.groups = groups
+
       const subRes = await fetch(MAILERLITE_SUBSCRIBERS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${MAILERLITE_API_KEY}`,
         },
-        body: JSON.stringify({ email: payload.email, status: 'active', groups: ['78972911530018580'] }),
+        body: JSON.stringify(body),
       })
 
       if (![200, 201].includes(subRes.status)) {

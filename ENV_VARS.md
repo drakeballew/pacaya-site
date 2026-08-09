@@ -13,11 +13,18 @@ Note on Emailable
 MailerLite-specific
 - `MAILERLITE_API_KEY` — required to call MailerLite's official API (connect.mailerlite.com).
 - `MAILERLITE_SUBSCRIBERS_URL` — MailerLite subscribers endpoint (defaults to `https://connect.mailerlite.com/api/subscribers`).
--- `ADD_CONTACT_TO_MAILERLITE` — optional flag (`true`) to add contact form emails as subscribers automatically.
+MailerLite-specific
+- `MAILERLITE_API_KEY` — required to call MailerLite's official API (connect.mailerlite.com).
+- `MAILERLITE_SUBSCRIBERS_URL` — MailerLite subscribers endpoint (defaults to `https://connect.mailerlite.com/api/subscribers`).
+- `MAILERLITE_NEWSLETTER_GROUP_ID` — Group ID to add newsletter subscribers to (optional).
+- `MAILERLITE_CONTACT_FORM_GROUP_ID` — Group ID to add contact form submissions to (optional).
+- `ADD_CONTACT_TO_MAILERLITE` — optional flag (`true`) to add contact form emails as subscribers automatically.
 
 Notes
 - The server endpoints are:
   - `/api/contact` — accepts the full contact form payload and will verify the email before forwarding to `MAILERLITE_API_URL`.
   - `/api/newsletter` — accepts `{ email }` and will verify the email before forwarding to `MAILERLITE_API_URL`.
+   - `/api/contact` — accepts the full contact form payload and will verify the email before optionally adding the email as a subscriber (if `ADD_CONTACT_TO_MAILERLITE=true`).
+   - `/api/newsletter` — accepts `{ email }` and will verify the email before adding it as a subscriber.
 
 Set these in your environment (e.g., in Vercel or your `.env.local`) before deploying.
