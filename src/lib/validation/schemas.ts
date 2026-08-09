@@ -1,5 +1,12 @@
 import { z } from 'zod'
 
+function isValidPhone(value: string): boolean {
+  if (!value) return true
+  if (value.length > 30) return false
+  if (!/^[\d\s().+-]+$/.test(value)) return false
+  return value.replace(/\D/g, '').length >= 7
+}
+
 export const newsletterSchema = z.object({
   email: z
     .string()
@@ -16,8 +23,16 @@ export const contactSchema = z.object({
     .min(1, 'Enter a valid email address.')
     .email('Enter a valid email address.'),
   company: z.string().trim().optional(),
-  phone: z.string().trim().optional(),
-  message: z.string().trim().min(1, 'Tell us a bit about your project.'),
+  phone: z
+    .string()
+    .trim()
+    .refine(isValidPhone, { message: 'Enter a valid phone number.' })
+    .optional(),
+  message: z
+    .string()
+    .trim()
+    .min(1, 'Tell us a bit about your project.')
+    .max(1000, 'Message must be 1,000 characters or less.'),
   budget: z.enum(['25', '50', '100', '150'], {
     message: 'Select a budget range.',
   }),

@@ -1,10 +1,14 @@
 "use client";
 
-import { useId } from 'react'
-import React, { useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+import React from 'react'
 
 import { Button } from '@/components/Button'
 import { FadeIn } from '@/components/FadeIn'
+import {
+  TurnstileField,
+  type TurnstileFieldHandle,
+} from '@/components/TurnstileField'
 import type { FormApiResponse } from '@/lib/messages'
 import { formMessages } from '@/lib/messages'
 import {
@@ -12,6 +16,13 @@ import {
   getFieldErrors,
   isValid,
 } from '@/lib/validation/schemas'
+
+declare global {
+  interface Window {
+    sa_event?: (name: string, data?: Record<string, unknown>, cb?: () => void) => void;
+    sa_loaded?: boolean;
+  }
+}
 
 function TextInput({
   label,
@@ -115,13 +126,48 @@ const initialFormData = {
 }
 
 export function ContactForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const turnstileRef = useRef<TurnstileFieldHandle>(null)
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileFailed, setTurnstileFailed] = useState(false)
 
-  const canSubmit = isValid(contactSchema, formData) && !isSubmitting
+  const formIsValid = isValid(contactSchema, formData)
+  const waitingForTurnstile =
+    formIsValid && turnstileToken === null && !isSubmitting
+
+  useEffect(() => {
+    if (!successMessage) return
+
+    const timeout = window.setTimeout(() => {
+      setSuccessMessage(null)
+    }, 8000)
+
+    return () => window.clearTimeout(timeout)
+  }, [successMessage])
+
+  function handleTurnstileSuccess(token: string) {
+    setTurnstileToken(token)
+    setTurnstileFailed(false)
+  }
+
+  function handleTurnstileExpire() {
+    setTurnstileToken(null)
+  }
+
+  function handleTurnstileError() {
+    setTurnstileToken(null)
+    setTurnstileFailed(true)
+    turnstileRef.current?.reset()
+  }
+
+  function resetTurnstileAfterSubmit() {
+    setTurnstileToken(null)
+    turnstileRef.current?.reset()
+  }
 
   function validateField(field: keyof typeof initialFormData) {
     const fieldErrors = getFieldErrors(contactSchema, formData)
@@ -133,14 +179,12 @@ export function ContactForm() {
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    const nextData = { ...formData, [name]: value }
+    setFormData(nextData);
     setSubmitError(null)
+    setSuccessMessage(null)
 
-    if (errors[name]) {
-      const nextData = { ...formData, [name]: value }
+    if (errors[name] || name === 'budget') {
       const fieldErrors = getFieldErrors(contactSchema, nextData)
       setErrors((current) => ({
         ...current,
@@ -160,8 +204,28 @@ export function ContactForm() {
     const fieldErrors = getFieldErrors(contactSchema, formData)
     setErrors(fieldErrors)
 
-    if (!isValid(contactSchema, formData)) {
+    if (!formIsValid) {
       return
+    }
+
+    if (!turnstileToken) {
+      setSubmitError('Complete the security check below to submit.')
+      return
+    }
+
+    try {
+      if (typeof window !== 'undefined' && typeof window.sa_event === 'function') {
+        window.sa_event('form_submit_contact', {
+          form_name: 'Contact Form',
+          page: window.location.pathname,
+          submitted_at: new Date().toISOString(),
+          user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+          referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+          fields: { ...formData },
+        })
+      }
+    } catch (error) {
+      console.error('Simple Analytics tracking failed:', error)
     }
 
     setIsSubmitting(true)
@@ -172,19 +236,28 @@ export function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken,
+        }),
       });
 
       const data = (await response.json()) as FormApiResponse
 
       if (data.ok) {
-        setIsSubmitted(true)
+        setFormData(initialFormData)
+        setErrors({})
+        setSubmitError(null)
+        setSuccessMessage(data.message)
+        resetTurnstileAfterSubmit()
         return
       }
 
       setSubmitError(data.message)
+      resetTurnstileAfterSubmit()
     } catch {
       setSubmitError(formMessages.serverError)
+      resetTurnstileAfterSubmit()
     } finally {
       setIsSubmitting(false)
     }
@@ -192,12 +265,7 @@ export function ContactForm() {
 
   return (
     <FadeIn className="lg:order-last">
-      {isSubmitted ? (
-        <div className="flex items-center justify-center">
-          ✅ {formMessages.contactSuccess}
-        </div>
-      ) : (
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit} noValidate data-sa-client-handled="true">
         <h2 className="font-display text-base font-semibold text-neutral-950">
           Work inquiries
         </h2>
@@ -247,6 +315,7 @@ export function ContactForm() {
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors.message}
+            maxLength={1000}
           />
           <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
             <fieldset>
@@ -298,15 +367,40 @@ export function ContactForm() {
             {submitError}
           </p>
         ) : null}
-        <Button
-          type="submit"
-          className="mt-10 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={!canSubmit}
-        >
-          {isSubmitting ? 'Sending…' : 'Let’s work together'}
-        </Button>
+        <TurnstileField
+          ref={turnstileRef}
+          className="mt-6"
+          onSuccess={handleTurnstileSuccess}
+          onExpire={handleTurnstileExpire}
+          onError={handleTurnstileError}
+        />
+        {turnstileFailed ? (
+          <p className="mt-2 text-sm text-red-600" role="alert">
+            Security verification failed. Please try again.
+          </p>
+        ) : waitingForTurnstile ? (
+          <p className="mt-2 text-sm text-neutral-600">
+            Complete the security check above to submit.
+          </p>
+        ) : null}
+        {successMessage ? (
+          <div
+            className="mt-10 rounded-2xl border border-green-200 bg-green-50 px-6 py-4 text-sm font-medium text-green-800"
+            role="status"
+            aria-live="polite"
+          >
+            {successMessage}
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            className="mt-10 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isSubmitting || waitingForTurnstile}
+          >
+            {isSubmitting ? 'Sending…' : 'Let’s work together'}
+          </Button>
+        )}
       </form>
-    )}
     </FadeIn>
   );
 }

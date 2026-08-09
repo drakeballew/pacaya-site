@@ -1,4 +1,4 @@
-const EMAILABLE_VERIFY_URL = 'https://api.emailable.com/v1/verify'
+const DEFAULT_EMAILABLE_VERIFY_URL = 'https://api.emailable.com/v1/verify'
 
 export type EmailableState =
   | 'deliverable'
@@ -24,7 +24,9 @@ async function requestVerification(
   email: string,
   apiKey: string,
 ): Promise<Response> {
-  const url = new URL(EMAILABLE_VERIFY_URL)
+  const url = new URL(
+    process.env.EMAILABLE_API_URL || DEFAULT_EMAILABLE_VERIFY_URL,
+  )
   url.searchParams.set('email', email)
   url.searchParams.set('api_key', apiKey)
 

@@ -1,4 +1,6 @@
-const MAILERLITE_API_URL = 'https://connect.mailerlite.com/api/subscribers'
+const MAILERLITE_API_URL =
+  process.env.MAILERLITE_SUBSCRIBERS_URL ||
+  'https://connect.mailerlite.com/api/subscribers'
 
 export type UpsertSubscriberInput = {
   email: string
@@ -9,10 +11,11 @@ export type UpsertSubscriberInput = {
 export async function upsertSubscriber(
   input: UpsertSubscriberInput,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const apiToken = process.env.MAILERLITE_API_TOKEN
+  const apiToken =
+    process.env.MAILERLITE_API_TOKEN || process.env.MAILERLITE_API_KEY
 
   if (!apiToken) {
-    console.error('MAILERLITE_API_TOKEN is not configured')
+    console.error('MAILERLITE_API_TOKEN or MAILERLITE_API_KEY is not configured')
     return { ok: false, error: 'Missing MailerLite API token' }
   }
 

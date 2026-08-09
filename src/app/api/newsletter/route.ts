@@ -3,13 +3,14 @@ import { NextResponse } from 'next/server'
 import { verifyEmail } from '@/lib/emailable'
 import { formMessages, type FormApiResponse } from '@/lib/messages'
 import { upsertSubscriber } from '@/lib/mailerlite'
+import { getClientIp, verifyTurnstileToken } from '@/lib/turnstile'
 import { newsletterSchema } from '@/lib/validation/schemas'
 
 export async function POST(request: Request) {
-  let body: unknown
+  let body: Record<string, unknown>
 
   try {
-    body = await request.json()
+    body = (await request.json()) as Record<string, unknown>
   } catch {
     return NextResponse.json<FormApiResponse>(
       { ok: false, message: formMessages.serverError },
@@ -17,7 +18,23 @@ export async function POST(request: Request) {
     )
   }
 
-  const parsed = newsletterSchema.safeParse(body)
+  const turnstileToken =
+    typeof body.turnstileToken === 'string' ? body.turnstileToken : ''
+
+  const turnstileValid = await verifyTurnstileToken(
+    turnstileToken,
+    getClientIp(request),
+  )
+
+  if (!turnstileValid) {
+    return NextResponse.json<FormApiResponse>(
+      { ok: false, message: formMessages.serverError },
+      { status: 403 },
+    )
+  }
+
+  const { turnstileToken: _, ...formBody } = body
+  const parsed = newsletterSchema.safeParse(formBody)
 
   if (!parsed.success) {
     const message =
