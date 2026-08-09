@@ -39,7 +39,7 @@ async function requestVerification(
 }
 
 export async function verifyEmail(email: string): Promise<EmailableResult> {
-  const apiKey = process.env.EMAILABLE_API_KEY
+  const apiKey = process.env.EMAILABLE_API_KEY?.trim()
 
   if (!apiKey) {
     console.error('EMAILABLE_API_KEY is not configured')

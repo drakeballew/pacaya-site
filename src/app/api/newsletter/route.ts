@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const groupId = process.env.MAILERLITE_NEWSLETTER_GROUP_ID
+  const groupId = process.env.MAILERLITE_NEWSLETTER_GROUP_ID?.trim()
 
   if (!groupId) {
     console.error('MAILERLITE_NEWSLETTER_GROUP_ID is not configured')
@@ -69,6 +69,10 @@ export async function POST(request: Request) {
   })
 
   if (!mailerLiteResult.ok) {
+    console.error('Newsletter MailerLite failure:', {
+      status: mailerLiteResult.status,
+      detail: mailerLiteResult.detail,
+    })
     return NextResponse.json<FormApiResponse>(
       { ok: false, message: formMessages.serverError },
       { status: 502 },

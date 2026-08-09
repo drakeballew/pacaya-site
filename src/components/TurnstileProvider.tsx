@@ -11,6 +11,7 @@ import {
 
 type TurnstileContextValue = {
   requestToken: () => Promise<string>
+  prepareForNextSubmit: () => void
 }
 
 const TurnstileContext = createContext<TurnstileContextValue | null>(null)
@@ -71,6 +72,14 @@ export function TurnstileProvider({ children }: { children: React.ReactNode }) {
     readyResolveRef.current?.()
   }, [])
 
+  const prepareForNextSubmit = useCallback(() => {
+    if (!siteKey) {
+      return
+    }
+
+    turnstileRef.current?.reset()
+  }, [siteKey])
+
   const requestToken = useCallback(async (): Promise<string> => {
     if (!siteKey) {
       if (process.env.NODE_ENV === 'development') {
@@ -97,6 +106,7 @@ export function TurnstileProvider({ children }: { children: React.ReactNode }) {
       pendingRef.current = { resolve, reject, timeoutId }
 
       try {
+        turnstileRef.current?.reset()
         turnstileRef.current?.execute()
       } catch {
         clearPending(new Error('turnstile-execute-failed'))
@@ -128,7 +138,7 @@ export function TurnstileProvider({ children }: { children: React.ReactNode }) {
   }, [clearPending])
 
   return (
-    <TurnstileContext.Provider value={{ requestToken }}>
+    <TurnstileContext.Provider value={{ requestToken, prepareForNextSubmit }}>
       {children}
       {siteKey ? (
         <div className="sr-only" aria-hidden="true">

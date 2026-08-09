@@ -92,7 +92,7 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function NewsletterForm() {
-  const { requestToken } = useTurnstile()
+  const { requestToken, prepareForNextSubmit } = useTurnstile()
   const [formData, setFormData] = React.useState({ email: '' })
   const [errors, setErrors] = React.useState<Record<string, string>>({})
   const [submitError, setSubmitError] = React.useState<string | null>(null)
@@ -147,8 +147,11 @@ function NewsletterForm() {
     }
 
     setIsSubmitting(true)
+    let shouldRefreshTurnstile = false
 
     try {
+      shouldRefreshTurnstile = true
+
       let turnstileToken: string
 
       try {
@@ -195,6 +198,9 @@ function NewsletterForm() {
     } catch {
       setSubmitError(formMessages.serverError)
     } finally {
+      if (shouldRefreshTurnstile) {
+        prepareForNextSubmit()
+      }
       setIsSubmitting(false)
     }
   }

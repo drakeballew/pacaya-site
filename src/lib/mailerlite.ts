@@ -8,15 +8,42 @@ export type UpsertSubscriberInput = {
   fields?: Record<string, string>
 }
 
+export type UpsertSubscriberResult =
+  | { ok: true }
+  | { ok: false; error: string; status?: number; detail?: string }
+
+function getApiToken(): string | undefined {
+  const token =
+    process.env.MAILERLITE_API_TOKEN || process.env.MAILERLITE_API_KEY
+
+  return token?.trim() || undefined
+}
+
 export async function upsertSubscriber(
   input: UpsertSubscriberInput,
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  const apiToken =
-    process.env.MAILERLITE_API_TOKEN || process.env.MAILERLITE_API_KEY
+): Promise<UpsertSubscriberResult> {
+  const apiToken = getApiToken()
 
   if (!apiToken) {
     console.error('MAILERLITE_API_TOKEN or MAILERLITE_API_KEY is not configured')
     return { ok: false, error: 'Missing MailerLite API token' }
+  }
+
+  const groups = input.groups.map((group) => group.trim()).filter(Boolean)
+
+  if (groups.length === 0) {
+    console.error('MailerLite upsert failed: no group IDs provided')
+    return { ok: false, error: 'Missing MailerLite group ID' }
+  }
+
+  const payload: Record<string, unknown> = {
+    email: input.email.trim(),
+    groups,
+    status: 'active',
+  }
+
+  if (input.fields && Object.keys(input.fields).length > 0) {
+    payload.fields = input.fields
   }
 
   try {
@@ -27,18 +54,23 @@ export async function upsertSubscriber(
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email: input.email,
-        groups: input.groups,
-        fields: input.fields,
-        status: 'active',
-      }),
+      body: JSON.stringify(payload),
     })
 
     if (!response.ok) {
       const errorBody = await response.text()
-      console.error('MailerLite upsert failed:', response.status, errorBody)
-      return { ok: false, error: 'MailerLite request failed' }
+      console.error(
+        'MailerLite upsert failed:',
+        response.status,
+        errorBody.slice(0, 500),
+      )
+
+      return {
+        ok: false,
+        error: 'MailerLite request failed',
+        status: response.status,
+        detail: errorBody.slice(0, 500),
+      }
     }
 
     return { ok: true }

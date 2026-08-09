@@ -7,7 +7,7 @@ type TurnstileVerifyResponse = {
 }
 
 export async function verifyTurnstileToken(token: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY
+  const secret = process.env.TURNSTILE_SECRET_KEY?.trim()
 
   if (!secret) {
     if (

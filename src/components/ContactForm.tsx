@@ -123,7 +123,7 @@ const initialFormData = {
 }
 
 export function ContactForm() {
-  const { requestToken } = useTurnstile()
+  const { requestToken, prepareForNextSubmit } = useTurnstile()
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -182,8 +182,11 @@ export function ContactForm() {
     }
 
     setIsSubmitting(true)
+    let shouldRefreshTurnstile = false
 
     try {
+      shouldRefreshTurnstile = true
+
       let turnstileToken: string
 
       try {
@@ -233,6 +236,9 @@ export function ContactForm() {
     } catch {
       setSubmitError(formMessages.serverError)
     } finally {
+      if (shouldRefreshTurnstile) {
+        prepareForNextSubmit()
+      }
       setIsSubmitting(false)
     }
   }

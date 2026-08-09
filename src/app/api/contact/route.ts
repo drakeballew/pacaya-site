@@ -53,9 +53,10 @@ export async function POST(request: Request) {
     )
   }
 
-  const groupId =
+  const groupId = (
     process.env.MAILERLITE_CONTACT_GROUP_ID ||
     process.env.MAILERLITE_CONTACT_FORM_GROUP_ID
+  )?.trim()
 
   if (!groupId) {
     console.error('MAILERLITE_CONTACT_GROUP_ID is not configured')
@@ -86,6 +87,10 @@ export async function POST(request: Request) {
   })
 
   if (!mailerLiteResult.ok) {
+    console.error('Contact MailerLite failure:', {
+      status: mailerLiteResult.status,
+      detail: mailerLiteResult.detail,
+    })
     return NextResponse.json<FormApiResponse>(
       { ok: false, message: formMessages.serverError },
       { status: 502 },
