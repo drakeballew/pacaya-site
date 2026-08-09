@@ -1,10 +1,18 @@
+'use client'
+
 import Link from 'next/link'
+import React from 'react'
 
 import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
 import { Logo } from '@/components/Logo'
-import { socialMediaProfiles } from '@/components/SocialMedia'
-import React from 'react'
+import type { FormApiResponse } from '@/lib/messages'
+import { formMessages } from '@/lib/messages'
+import {
+  getFieldErrors,
+  isValid,
+  newsletterSchema,
+} from '@/lib/validation/schemas'
 
 const navigation = [
   {
@@ -32,10 +40,6 @@ const navigation = [
       { title: 'Contact us', href: '/contact' },
     ],
   },
-  // {
-  //   title: 'Connect',
-  //   links: socialMediaProfiles,
-  // },
 ]
 
 function Navigation() {
@@ -81,40 +85,94 @@ function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 function NewsletterForm() {
   const [formData, setFormData] = React.useState({ email: '' })
+  const [errors, setErrors] = React.useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = React.useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isSubmitted, setIsSubmitted] = React.useState(false)
+
+  const canSubmit = isValid(newsletterSchema, formData) && !isSubmitting
+
+  function validateField(field: 'email') {
+    const fieldErrors = getFieldErrors(newsletterSchema, formData)
+    setErrors((current) => ({
+      ...current,
+      [field]: fieldErrors[field] ?? '',
+    }))
+  }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
-    setFormData({ email: value });
+    const { value } = event.target
+    setFormData({ email: value })
+    setSubmitError(null)
+
+    if (errors.email) {
+      const fieldErrors = getFieldErrors(newsletterSchema, { email: value })
+      setErrors({ email: fieldErrors.email ?? '' })
+    }
+  }
+
+  function handleBlur() {
+    validateField('email')
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(formData);
+    event.preventDefault()
+    setSubmitError(null)
+
+    const fieldErrors = getFieldErrors(newsletterSchema, formData)
+    setErrors(fieldErrors)
+
+    if (!isValid(newsletterSchema, formData)) {
+      return
+    }
+
+    setIsSubmitting(true)
+
     try {
-      const response = await fetch('https://eoeasxn2i6pznby.m.pipedream.net', {
+      const response = await fetch('/api/newsletter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       })
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
+
+      const data = (await response.json()) as FormApiResponse
+
+      if (data.ok) {
+        setIsSubmitted(true)
+        return
       }
-      const data = await response;
-      console.log('Success:', data)
-    } catch (error) {
-      console.error('Error:', error)
+
+      setSubmitError(data.message)
+    } catch {
+      setSubmitError(formMessages.serverError)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
+  if (isSubmitted) {
+    return (
+      <div className="max-w-sm">
+        <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
+          Sign up for our newsletter
+        </h2>
+        <p className="mt-4 text-sm text-neutral-700">
+          {formMessages.newsletterSuccess}
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <form className="max-w-sm" onSubmit={handleSubmit}>
+    <form className="max-w-sm" onSubmit={handleSubmit} noValidate>
       <h2 className="font-display text-sm font-semibold tracking-wider text-neutral-950">
         Sign up for our newsletter
       </h2>
       <p className="mt-4 text-sm text-neutral-700">
-        Subscribe to receive tips, tricks, and thoughts on startup marketing, development, and leadership via e-mail.
+        Subscribe to receive tips, tricks, and thoughts on startup marketing,
+        development, and leadership via e-mail.
       </p>
       <div className="relative mt-6">
         <input
@@ -122,21 +180,39 @@ function NewsletterForm() {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="Email address"
           autoComplete="email"
           aria-label="Email address"
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'newsletter-email-error' : undefined}
           className="block w-full rounded-2xl border border-neutral-300 bg-transparent py-4 pl-6 pr-20 text-base/6 text-neutral-950 ring-4 ring-transparent transition placeholder:text-neutral-500 focus:border-neutral-950 focus:outline-none focus:ring-neutral-950/5"
         />
         <div className="absolute inset-y-1 right-1 flex justify-end">
           <button
             type="submit"
             aria-label="Submit"
-            className="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800"
+            disabled={!canSubmit}
+            className="flex aspect-square h-full items-center justify-center rounded-xl bg-neutral-950 text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ArrowIcon className="w-4" />
           </button>
         </div>
       </div>
+      {errors.email ? (
+        <p
+          id="newsletter-email-error"
+          className="mt-2 text-sm text-red-600"
+          role="alert"
+        >
+          {errors.email}
+        </p>
+      ) : null}
+      {submitError ? (
+        <p className="mt-2 text-sm text-red-600" role="alert">
+          {submitError}
+        </p>
+      ) : null}
     </form>
   )
 }
