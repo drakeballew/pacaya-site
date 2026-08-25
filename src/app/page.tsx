@@ -47,7 +47,7 @@ function Clients() {
       <Container>
         <FadeIn className="flex items-center gap-x-8">
           <h2 className="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left">
-            We’ve worked with dozeds of amazing clients:
+            We’ve worked with dozens of amazing clients:
           </h2>
           <div className="h-px flex-auto bg-neutral-800" />
         </FadeIn>
@@ -172,7 +172,7 @@ function Services() {
 
 export const metadata: Metadata = {
   description:
-    'Full-Stack Product Development for Small Business - Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
+    'Full-Stack Product Development for Small Business - Pacaya Digital is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
 }
 
 export default async function Home() {
@@ -186,7 +186,7 @@ export default async function Home() {
             Full-Stack Product Development for Small Business
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
-            Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.
+            Pacaya Digital is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.
           </p>
         </FadeIn>
       </Container>

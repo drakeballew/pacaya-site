@@ -1,73 +1,33 @@
-import { useId } from 'react'
 import { type Metadata } from 'next'
-import Link from 'next/link'
-import React, {useState } from 'react'
 
-import { Border } from '@/components/Border'
-import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
 import { Offices } from '@/components/Offices'
 import { PageIntro } from '@/components/PageIntro'
-import { SocialMedia } from '@/components/SocialMedia'
 import { ContactForm } from '@/components/ContactForm'
 
 function ContactDetails() {
   return (
     <FadeIn>
       <h2 className="font-display text-base font-semibold text-neutral-950">
-        Step into our office
+        Physical Address.
       </h2>
-      <p className="mt-6 text-base text-neutral-600">
-        Prefer doing things in person? We don&apos;t! But here&apos;s a physical address in case you want to send us a postcard :)
-      </p>
 
-      <Offices className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2" />
-
-      <Border className="mt-16 pt-16">
-        <h2 className="font-display text-base font-semibold text-neutral-950">
-          Email us
-        </h2>
-        <dl className="mt-6 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
-          {[
-            ['Careers', 'careers@pacaya.io'],
-            ['Press', 'press@pacaya.io'],
-          ].map(([label, email]) => (
-            <div key={email}>
-              <dt className="font-semibold text-neutral-950">{label}</dt>
-              <dd>
-                <Link
-                  href={`mailto:${email}`}
-                  className="text-neutral-600 hover:text-neutral-950"
-                >
-                  {email}
-                </Link>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Border>
-
-      <Border className="mt-16 pt-16">
-        <h2 className="font-display text-base font-semibold text-neutral-950">
-          Follow us
-        </h2>
-        <SocialMedia className="mt-6" />
-      </Border>
+      <Offices className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2" />
     </FadeIn>
   )
 }
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Let’s work together. We can’t wait to hear from you.',
+  description: 'Tell us about your project. We look forward to hearing from you.',
 }
 
 export default function Contact() {
   return (
     <>
-      <PageIntro eyebrow="Contact us" title="Let’s work together">
-        <p>We can’t wait to hear from you.</p>
+      <PageIntro eyebrow="Contact us" title="Tell us about your project">
+        <p>We look forward to hearing from you.</p>
       </PageIntro>
 
       <Container className="mt-24 sm:mt-32 lg:mt-40">
