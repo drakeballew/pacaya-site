@@ -172,7 +172,7 @@ function Services() {
 
 export const metadata: Metadata = {
   description:
-    'Full-Stack Product Development for Small Businesses - Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
+    'Full-Stack Product Development for Small Business - Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
 }
 
 export default async function Home() {
@@ -183,7 +183,7 @@ export default async function Home() {
       <Container className="mt-24 sm:mt-32 md:mt-56">
         <FadeIn className="max-w-3xl">
           <h1 className="font-display text-5xl font-medium tracking-tight text-neutral-950 [text-wrap:balance] sm:text-7xl">
-            Full-Stack Product Development for Small Businesses
+            Full-Stack Product Development for Small Business
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
             Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.
