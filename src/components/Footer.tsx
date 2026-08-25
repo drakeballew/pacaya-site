@@ -216,8 +216,8 @@ function NewsletterForm() {
         Sign up for our newsletter
       </h2>
       <p className="mt-4 text-sm text-neutral-700">
-        Subscribe to receive tips, tricks, and thoughts on startup marketing,
-        development, and leadership via e-mail.
+        Subscribe to receive thoughts on digital marketing,
+        product development, and the broader tech landscape.
       </p>
       <div className="relative mt-6">
         <input

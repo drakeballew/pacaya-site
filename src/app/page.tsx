@@ -9,29 +9,28 @@ import { List, ListItem } from '@/components/List'
 import { SectionIntro } from '@/components/SectionIntro'
 import { StylizedImage } from '@/components/StylizedImage'
 import { Testimonial } from '@/components/Testimonial'
-import logoBrightPath from '@/images/clients/bright-path/logo-light.svg'
-import logoFamilyFund from '@/images/clients/family-fund/logo-light.svg'
-import logoGreenLife from '@/images/clients/green-life/logo-light.svg'
-import logoHomeWork from '@/images/clients/home-work/logo-light.svg'
-import logoMailSmirk from '@/images/clients/mail-smirk/logo-light.svg'
-import logoNorthAdventures from '@/images/clients/north-adventures/logo-light.svg'
 import logoUnicornFormsLight from '@/images/clients/unicornforms/logo-light.svg'
 import logoUnicornFormsDark from '@/images/clients/unicornforms/logo-dark.svg'
 import logoKaratLight from '@/images/clients/karat/logo-light.svg'
 import logoKaratDark from '@/images/clients/karat/logo-dark.svg'
 import logoFiverrLight from '@/images/clients/fiverr/logomark-dark.svg'
 import logoFiverrDark from '@/images/clients/fiverr/logo-dark.svg'
+import logoDeficitLight from '@/images/clients/deficit/deficit-logo-light.svg'
+import logoDeficitDark from '@/images/clients/deficit/deficit-logo-dark.svg'
+import logoOpenRecipeLight from '@/images/clients/openrecipe/openrecipe-dark.svg'
+import logoOpenRecipeDark from '@/images/clients/openrecipe/openrecipe-dark.svg'
 import logoKivaDark from '@/images/clients/kiva/logo-dark.svg'
 import logoOutdoorsyDark from '@/images/clients/outdoorsy/logo-dark.svg'
 import logoItalicDark from '@/images/clients/italic/logo-dark.svg'
 import logoLeToteDark from '@/images/clients/letote/logo-dark.svg'
 import logoOlarkDark from '@/images/clients/olark/logo-dark.svg'
 import logoSpeakDark from '@/images/clients/speak/logo-dark.svg'
-import logoUnseal from '@/images/clients/unseal/logo-light.svg'
 import imageLaptop from '@/images/laptop.jpg'
 import { type CaseStudy, type MDXEntry, loadCaseStudies } from '@/lib/mdx'
 
 const clients = [
+  // ['Deficit', logoDeficitDark],
+  // ['OpenRecipe', logoOpenRecipeDark],
   ['Fiverr', logoFiverrDark],
   ['UnicornForms', logoUnicornFormsDark],
   ['Karat', logoKaratDark],
@@ -48,7 +47,7 @@ function Clients() {
       <Container>
         <FadeIn className="flex items-center gap-x-8">
           <h2 className="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left">
-            We’ve worked with hundreds of amazing people
+            We’ve worked with dozeds of amazing clients:
           </h2>
           <div className="h-px flex-auto bg-neutral-800" />
         </FadeIn>
@@ -79,11 +78,11 @@ function CaseStudies({
   return (
     <>
       <SectionIntro
-        title="Engineering Sales & Marketing solutions"
+        title="Engineering & Marketing solutions"
         className="mt-24 sm:mt-32 lg:mt-40"
       >
         <p>
-          Accelerate growth without pulling resources from Engineering.
+          Bespoke digital growth solutions, from full-stack app development to Product solutions without the overhead.
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -134,12 +133,12 @@ function Services() {
     <>
       <SectionIntro
         eyebrow="Services"
-        title="Everything you need to grow, except the product."
+        title="Build your product, then scale the digital side of your business."
         className="mt-24 sm:mt-32 lg:mt-40"
       >
         <p>
-          From outbound sales to in-app user flows, we have the expertise and experience
-          to help you grow your startup.
+          From product development to growth strategies, we have the expertise and experience
+          to help you build and grow your small business.
         </p>
       </SectionIntro>
       <Container className="mt-16">
@@ -154,16 +153,15 @@ function Services() {
             </FadeIn>
           </div>
           <List className="mt-16 lg:mt-0 lg:w-1/2 lg:min-w-[33rem] lg:pl-4">
-            <ListItem title="Engineering as Marketing">
-              Build secondary applications that act as lead generation tools for your primary product.
+            <ListItem title="Full-Stack Product Development">
+              Build fully-featured applications across iOS, Android, and web.
+            </ListItem>
+            <ListItem title="Growth & Marketing">
+              Market your product to your target audience and drive revenue growth.
             </ListItem>
             <ListItem title="Data & Analytics">
               Craft solutions that ensure you are able 
               to answer your most pressing questions and uncover new opportunities.
-            </ListItem>
-            <ListItem title="Sales & Marketing automation">
-              Stand up and/or refine your sales and marketing workflows 
-              to ensure you are capturing as much value as possible from your potential customers.
             </ListItem>
           </List>
         </div>
@@ -174,7 +172,7 @@ function Services() {
 
 export const metadata: Metadata = {
   description:
-    'We are a growth studio working at the intersection of Engineering and Marketing.',
+    'Full-Stack Product Development for Small Businesses - Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
 }
 
 export default async function Home() {
@@ -185,11 +183,10 @@ export default async function Home() {
       <Container className="mt-24 sm:mt-32 md:mt-56">
         <FadeIn className="max-w-3xl">
           <h1 className="font-display text-5xl font-medium tracking-tight text-neutral-950 [text-wrap:balance] sm:text-7xl">
-            Experts in Startup Growth
+            Full-Stack Product Development for Small Businesses
           </h1>
           <p className="mt-6 text-xl text-neutral-600">
-            We work at the intersection of Marketing
-            and Engineering to help startups build the tools they need to grow.
+            Pacaya is a growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.
           </p>
         </FadeIn>
       </Container>
@@ -202,7 +199,7 @@ export default async function Home() {
         className="mt-24 sm:mt-32 lg:mt-40"
         client={{ name: 'UnicornForms', logo: logoUnicornFormsLight }}
       >
-        Pacaya truly understands zero, idea, and early-revenue startups and can help them progress with metrics and data that demonstrate product market fit.
+        Pacaya truly understands zero, idea, and early-revenue small businesses and can help them progress with metrics and data that demonstrate product market fit.
       </Testimonial>
 
       <Services />

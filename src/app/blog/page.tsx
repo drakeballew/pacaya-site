@@ -24,7 +24,7 @@ export default async function Blog() {
     <>
       <PageIntro eyebrow="Blog" title="The latest articles and news">
         <p>
-          Tips, tricks, and thoughts on startup marketing, development, and leadership.
+          Tips, tricks, and thoughts on digital marketing, development, and leadership.
         </p>
       </PageIntro>
 

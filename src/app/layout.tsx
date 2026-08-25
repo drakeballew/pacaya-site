@@ -5,12 +5,10 @@ import { RootLayout } from '@/components/RootLayout'
 
 import '@/styles/tailwind.css'
 
-import favicon from '/favicon.ico'
-
 export const metadata: Metadata = {
   title: {
     template: '%s - Pacaya Digital',
-    default: 'Pacaya Digital - Experts in Startup Growth',
+    default: 'Pacaya Digital - Growth studio that helps small businesses build, test, market, and scale their apps across web and mobile.',
   },
 }
 

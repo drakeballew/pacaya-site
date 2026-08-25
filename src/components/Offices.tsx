@@ -33,9 +33,9 @@ export function Offices({
     <ul role="list" {...props}>
       <li>
         <Office name="San Francisco" invert={invert}>
-          166 Geary St, Suite 1500 #1710
+          35 Miller Ave Unit 721
           <br />
-          San Francisco, California 94108
+          Mill Valley, California 94941
         </Office>
       </li>
       

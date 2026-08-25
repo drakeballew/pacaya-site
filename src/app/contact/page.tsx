@@ -16,10 +16,10 @@ function ContactDetails() {
   return (
     <FadeIn>
       <h2 className="font-display text-base font-semibold text-neutral-950">
-        Our offices
+        Step into our office
       </h2>
       <p className="mt-6 text-base text-neutral-600">
-        Prefer doing things in person? We don&apos;t! But here&apos;s our physical address in case you want to send us a postcard :)
+        Prefer doing things in person? We don&apos;t! But here&apos;s a physical address in case you want to send us a postcard :)
       </p>
 
       <Offices className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2" />
