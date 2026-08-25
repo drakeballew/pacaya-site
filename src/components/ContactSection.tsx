@@ -2,6 +2,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { FadeIn } from '@/components/FadeIn'
 import { Offices } from '@/components/Offices'
+import { Platforms } from '@/components/Platforms'
 
 export function ContactSection() {
   return (
@@ -12,10 +13,11 @@ export function ContactSection() {
             <h2 className="font-display text-3xl font-medium text-white [text-wrap:balance] sm:text-4xl">
               Tell us about your project
             </h2>
-            <div className="mt-6 flex">
+            <div className="mt-6 flex items-center gap-x-8">
               <Button href="/contact" invert>
                 Say Hi
               </Button>
+              <Platforms invert />
             </div>
             <div className="mt-10 border-t border-white/10 pt-10">
               <h3 className="font-display text-base font-semibold text-white">

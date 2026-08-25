@@ -5,6 +5,7 @@ import React from 'react'
 
 import { Button } from '@/components/Button'
 import { FadeIn } from '@/components/FadeIn'
+import { platformOptions } from '@/components/Platforms'
 import { useTurnstile } from '@/components/TurnstileProvider'
 import type { FormApiResponse } from '@/lib/messages'
 import { formMessages } from '@/lib/messages'
@@ -113,6 +114,27 @@ function RadioInput({
   )
 }
 
+function PlatformCheckbox({
+  label,
+  icon: Icon,
+  ...props
+}: React.ComponentPropsWithoutRef<'input'> & {
+  label: string
+  icon: React.ComponentType<React.ComponentPropsWithoutRef<'svg'>>
+}) {
+  return (
+    <label className="flex items-center gap-x-3">
+      <input
+        type="checkbox"
+        {...props}
+        className="h-6 w-6 flex-none appearance-none rounded border border-neutral-950/20 outline-none checked:border-[0.5rem] checked:border-neutral-950 focus-visible:ring-1 focus-visible:ring-neutral-950 focus-visible:ring-offset-2"
+      />
+      <Icon className="h-5 w-5 text-neutral-950" />
+      <span className="text-base/6 text-neutral-950">{label}</span>
+    </label>
+  )
+}
+
 const initialFormData = {
   name: '',
   email: '',
@@ -120,6 +142,7 @@ const initialFormData = {
   phone: '',
   message: '',
   budget: '',
+  platforms: [] as Array<(typeof platformOptions)[number]['id']>,
 }
 
 export function ContactForm() {
@@ -162,6 +185,27 @@ export function ContactForm() {
       setErrors((current) => ({
         ...current,
         [name]: fieldErrors[name] ?? '',
+      }))
+    }
+  }
+
+  function handlePlatformChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, checked } = event.target
+    const platform = value as (typeof platformOptions)[number]['id']
+    const nextPlatforms = checked
+      ? [...formData.platforms, platform]
+      : formData.platforms.filter((item) => item !== platform)
+    const nextData = { ...formData, platforms: nextPlatforms }
+
+    setFormData(nextData)
+    setSubmitError(null)
+    setSuccessMessage(null)
+
+    if (errors.platforms) {
+      const fieldErrors = getFieldErrors(contactSchema, nextData)
+      setErrors((current) => ({
+        ...current,
+        platforms: fieldErrors.platforms ?? '',
       }))
     }
   }
@@ -299,6 +343,29 @@ export function ContactForm() {
           />
           <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
             <fieldset>
+              <legend className="text-base/6 text-neutral-500">Platform</legend>
+              <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-3">
+                {platformOptions.map(({ id, name, icon }) => (
+                  <PlatformCheckbox
+                    key={id}
+                    label={name}
+                    icon={icon}
+                    name="platforms"
+                    value={id}
+                    checked={formData.platforms.includes(id)}
+                    onChange={handlePlatformChange}
+                  />
+                ))}
+              </div>
+            </fieldset>
+            {errors.platforms ? (
+              <p className="mt-4 text-sm text-red-600" role="alert">
+                {errors.platforms}
+              </p>
+            ) : null}
+          </div>
+          <div className="border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl">
+            <fieldset>
               <legend className="text-base/6 text-neutral-500">Budget</legend>
               <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <RadioInput
@@ -361,7 +428,7 @@ export function ContactForm() {
             className="mt-10 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Sending…' : 'Let’s work together'}
+            {isSubmitting ? 'Sending…' : 'Submit.'}
           </Button>
         )}
       </form>

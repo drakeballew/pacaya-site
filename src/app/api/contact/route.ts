@@ -43,7 +43,12 @@ export async function POST(request: Request) {
     )
   }
 
-  const { name, email, company, phone, message, budget } = parsed.data
+  const { name, email, company, phone, message, budget, platforms } = parsed.data
+  const platformList = platforms
+    .map((platform) =>
+      platform === 'ios' ? 'iOS' : platform.charAt(0).toUpperCase() + platform.slice(1),
+    )
+    .join(', ')
   const verification = await verifyEmail(email)
 
   if (!verification.deliverable) {
@@ -68,7 +73,7 @@ export async function POST(request: Request) {
 
   const fields: Record<string, string> = {
     name,
-    message,
+    message: `${message}\n\nPlatforms: ${platformList}`,
     budget,
   }
 

@@ -36,6 +36,9 @@ export const contactSchema = z.object({
   budget: z.enum(['25', '50', '100', '150'], {
     message: 'Select a budget range.',
   }),
+  platforms: z
+    .array(z.enum(['web', 'ios', 'android']))
+    .min(1, 'Select at least one platform.'),
 })
 
 export type NewsletterInput = z.infer<typeof newsletterSchema>
