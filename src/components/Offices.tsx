@@ -32,7 +32,7 @@ export function Offices({
   return (
     <ul role="list" {...props}>
       <li>
-        <Office name="San Francisco" invert={invert}>
+        <Office name="San Francisco Bay Area" invert={invert}>
           35 Miller Ave Unit 721
           <br />
           Mill Valley, California 94941
